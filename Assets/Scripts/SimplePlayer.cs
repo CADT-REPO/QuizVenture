@@ -1,54 +1,65 @@
 using UnityEngine;
 
-public class SimplePlayer    : MonoBehaviour
+public class SimplePlayer : MonoBehaviour
 {
-    public float moveSpeed = 10f;
-    public float rotationSpeed = 720f;
-    private Rigidbody rb;
-    public BulletPool bulletPool;
-    public Transform firePoint;
+    public float moveSpeed = 5f;             // Movement speed
+    public float rotationSpeed = 720f;      // Rotation speed
+    private Rigidbody rb;                   // Reference to Rigidbody component
+    public BulletPool bulletPool;           // Reference to BulletPool
+    public Transform firePoint;             // Fire point for shooting
+
+    private Vector3 movementInput;          // Stores movement input
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ; // Prevents unwanted tilting
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
-        bool fire = Input.GetKeyDown(KeyCode.Space);  // Fire with spacebar
-
-        MovePlayer(h, v);
-
-        if (fire)
-        {
-            Shoot();
-        }
+        MovePlayer();
     }
 
-    void MovePlayer(float h, float v)
+    public void SetMovementInput(Vector3 input)
     {
-        Vector3 move = new Vector3(h, 0, v).normalized;
-        if (move.magnitude > 0.1f)
-        {
-            float targetAngle = Mathf.Atan2(move.x, move.z) * Mathf.Rad2Deg;
-            Quaternion targetRotation = Quaternion.Euler(0, targetAngle, 0);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-            rb.MovePosition(transform.position + move * moveSpeed * Time.deltaTime);
-        }
+        movementInput = input.normalized;
     }
 
-    void Shoot()
+    void MovePlayer()
+    {
+        // If there's no input, skip movement
+        if (movementInput.magnitude < 0.1f) return;
+
+        // Calculate movement direction and apply translation
+        Vector3 moveDirection = movementInput * moveSpeed * Time.fixedDeltaTime;
+        rb.MovePosition(rb.position + moveDirection);
+
+        // Calculate target rotation based on movement direction
+        float targetAngle = Mathf.Atan2(movementInput.x, movementInput.z) * Mathf.Rad2Deg;
+        Quaternion targetRotation = Quaternion.Euler(0, targetAngle, 0);
+
+        // Smoothly rotate towards the target
+        rb.MoveRotation(Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime));
+    }
+
+    public void Shoot()
     {
         if (bulletPool != null && firePoint != null)
         {
             GameObject bullet = bulletPool.GetBullet();
-            bullet.transform.position = firePoint.position;
-            bullet.transform.rotation = firePoint.rotation;
+            if (bullet != null)
+            {
+                bullet.transform.position = firePoint.position;
+                bullet.transform.rotation = firePoint.rotation;
 
-            Bullet bulletScript = bullet.GetComponent<Bullet>();
-            bulletScript.SetBulletPool(bulletPool);  // Set the BulletPool reference
+                Bullet bulletScript = bullet.GetComponent<Bullet>();
+                bulletScript.SetBulletPool(bulletPool); // Set the BulletPool reference
+            }
+        }
+        else
+        {
+            Debug.LogWarning("BulletPool or FirePoint is not assigned!");
         }
     }
 }
