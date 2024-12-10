@@ -3,45 +3,45 @@ using System.Collections.Generic;
 
 public class BulletPool : MonoBehaviour
 {
-    public GameObject bulletPrefab;  // Bullet prefab to instantiate
-    public int poolSize = 10;  // Number of bullets in the pool
+    [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private int poolSize = 20;
     private Queue<GameObject> bulletPool;
 
-    void Start()
+    private void Start()
     {
-        // Initialize the pool
         bulletPool = new Queue<GameObject>();
-
-        // Preinstantiate the bullets and add them to the pool
         for (int i = 0; i < poolSize; i++)
         {
             GameObject bullet = Instantiate(bulletPrefab);
-            bullet.SetActive(false);  // Deactivate the bullet initially
+            bullet.SetActive(false);
+            bullet.GetComponent<Bullet>().SetBulletPool(this);
             bulletPool.Enqueue(bullet);
         }
+        Debug.Log("BulletPool initialized with " + poolSize + " bullets.");
     }
 
-    // Get a bullet from the pool
     public GameObject GetBullet()
     {
         if (bulletPool.Count > 0)
         {
             GameObject bullet = bulletPool.Dequeue();
-            bullet.SetActive(true);  // Activate the bullet
+            bullet.SetActive(true);
+            Debug.Log("Bullet retrieved from pool.");
             return bullet;
         }
         else
         {
-            // If the pool is empty, you can instantiate a new bullet
             GameObject bullet = Instantiate(bulletPrefab);
+            bullet.GetComponent<Bullet>().SetBulletPool(this);
+            Debug.LogWarning("Bullet pool empty. Instantiating new bullet.");
             return bullet;
         }
     }
 
-    // Return a bullet to the pool
     public void ReturnBullet(GameObject bullet)
     {
-        bullet.SetActive(false);  // Deactivate the bullet
-        bulletPool.Enqueue(bullet);  // Add it back to the pool
+        bullet.SetActive(false);
+        bulletPool.Enqueue(bullet);
+        Debug.Log("Bullet returned to pool.");
     }
 }

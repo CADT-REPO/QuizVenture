@@ -3,16 +3,19 @@ using FirstPersonMobileTools.Utility;
 
 namespace FirstPersonMobileTools.DynamicFirstPerson
 {
-        
+
     [RequireComponent(typeof(AudioSource))]
     [RequireComponent(typeof(CharacterController))]
     [RequireComponent(typeof(CameraLook))]
-    public class MovementController : MonoBehaviour {
-        
-    #region Class accessible field
+
+    public class MovementController : MonoBehaviour
+    {
+
+        #region Class accessible field
         [HideInInspector] public bool Input_Sprint { get; set; }    // Accessed through [Sprint button] in the scene
-        [HideInInspector] public bool Input_Jump   { get; set; }    // Accessed through [Jump button] in the scene
+        [HideInInspector] public bool Input_Jump { get; set; }    // Accessed through [Jump button] in the scene
         [HideInInspector] public bool Input_Crouch { get; set; }    // Accessed through [Crouch button] in the scene
+        [HideInInspector] public bool Input_Shoot { get; set; } // Accessed through "Shoot button"
 
         [HideInInspector] public float Walk_Speed { private get { return m_WalkSpeed; } set { m_WalkSpeed = value; } }          // Accessed through [Walk speed] slider in the settings
         [HideInInspector] public float Run_Speed { private get { return m_RunSpeed; } set { m_RunSpeed = value; } }             // Accessed through [Run speed] slider in the settings
@@ -20,20 +23,20 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
         [HideInInspector] public float Jump_Force { private get { return m_JumpForce; } set { m_JumpForce = value; } }          // Accessed through [Jump Force] slider in the settings
         [HideInInspector] public float Acceleration { private get { return m_Acceleration; } set { m_Acceleration = value; } }  // Accessed through [Acceleration] slider in the settings
         [HideInInspector] public float Land_Momentum { private get { return m_LandMomentum; } set { m_LandMomentum = value; } } // Accessed through [Landing Momentum] slider in the settings
-    #endregion
+        #endregion
 
-    #region Editor accessible field
+        #region Editor accessible field
         // Input Settings
         [SerializeField] private Joystick m_Joystick;   // Available joystick mobile in the scene
 
         // Ground Movement Settings
-        [SerializeField] private float m_Acceleration = 1.0f;   
-        [SerializeField] private float m_WalkSpeed = 1.0f;      
-        [SerializeField] private float m_RunSpeed = 3.0f;       
-        [SerializeField] private float m_CrouchSpeed = 0.5f;    
+        [SerializeField] private float m_Acceleration = 1.0f;
+        [SerializeField] private float m_WalkSpeed = 1.0f;
+        [SerializeField] private float m_RunSpeed = 3.0f;
+        [SerializeField] private float m_CrouchSpeed = 0.5f;
         [SerializeField] private float m_CrouchDelay = 0.5f;    // Crouch transition time
         [SerializeField] private float m_CrouchHeight = 1.0f;   // Crouch target height
-        
+
         // Air Movement Settings
         [SerializeField] private float m_JumpForce = 1.0f;      // y-axis force for jumping
         [SerializeField] private float m_Gravity = 10.0f;       // Gravity force
@@ -47,13 +50,18 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
         // Advanced Settings
         [SerializeField] private Bobbing m_WalkBob = new Bobbing(); // Bobbing for walking
         [SerializeField] private Bobbing m_IdleBob = new Bobbing(); // Bobbing for idling
-    #endregion
+
+        // Shooting Settings
+        [SerializeField] private BulletPool bulletPool; // Reference to the bullet pool
+        [SerializeField] private Transform gunTip; // Reference to the gun tip
+        [SerializeField] private float bulletSpeed = 20f; // Speed of the bullet
+        #endregion
 
         // Main reference class
         private Camera m_Camera;
         private CharacterController m_CharacterController;
         private CameraLook m_CameraLook;
-        private AudioSource m_AudioSource;      
+        private AudioSource m_AudioSource;
 
         // Main global value
         private Vector3 m_MovementDirection;                        // Vector3 value for CharacterController.Move()
@@ -67,14 +75,14 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
         private bool m_IsFloating = false;                          // Player state if is in the air
 
 
-        private float m_MovementVelocity 
-        { 
+        private float m_MovementVelocity
+        {
             get { return new Vector2(m_CharacterController.velocity.x, m_CharacterController.velocity.z).magnitude; }
         }
 
         private Vector2 Input_Movement
         {
-            get { if (m_Joystick != null) return new Vector2(m_Joystick.Horizontal, m_Joystick.Vertical); else return Vector2.zero; } 
+            get { if (m_Joystick != null) return new Vector2(m_Joystick.Horizontal, m_Joystick.Vertical); else return Vector2.zero; }
         }
 
         private bool m_IsWalking
@@ -94,25 +102,25 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
 
         private float m_speed
         {
-            get 
-            { 
-            #if UNITY_EDITOR
+            get
+            {
+#if UNITY_EDITOR
                 return Input_Crouch? m_CrouchSpeed : Input_Sprint? m_RunSpeed : 
                     Input_Movement.magnitude != 0 || External_Input_Movement.magnitude != 0? m_WalkSpeed : 0.0f; 
-            #elif UNITY_ANDROID
+#elif UNITY_ANDROID
                 return Input_Crouch? m_CrouchSpeed : Input_Sprint? m_RunSpeed : Input_Movement.magnitude != 0? m_WalkSpeed : 0.0f; 
-            #endif
+#endif
             }
         }
 
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
         public Vector2 External_Input_Movement;
-    #endif
+#endif
 
 
-        private void Start() 
+        private void Start()
         {
-            
+
             m_Camera = GetComponentInChildren<Camera>();
             m_AudioSource = GetComponent<AudioSource>();
             m_CharacterController = GetComponent<CharacterController>();
@@ -124,44 +132,92 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
 
             m_WalkBob.SetUp();
             m_IdleBob.SetUp();
-            
+
         }
 
-        private void Update() 
-        { 
+        private void Update()
+        {
 
             Handle_InputMovement();
-            Handle_AirMovement();   
+            Handle_AirMovement();
             Handle_Crouch();
             Handle_Step();
-
+            HandleShooting();
             UpdateWalkBob();
 
-            m_CharacterController.Move(m_MovementDirection * Time.deltaTime);   
+            m_CharacterController.Move(m_MovementDirection * Time.deltaTime);
 
             m_Camera.transform.localPosition += m_HeadMovement;
             m_HeadMovement = Vector3.zero;
         }
+        void HandleShooting()
+        {
+            // if (!) Debug.Log("not click"); // Only shoot when the button is pressed
+
+            // // Get a bullet from the pool
+            // GameObject bullet = bulletPool.GetBullet();
+
+            // // Activate and position the bullet
+            // bullet.transform.position = gunTip.position;
+            // bullet.transform.rotation = gunTip.rotation;
+            // bullet.SetActive(true);
+
+
+            // // Apply velocity to the bullet
+            // Rigidbody rb = bullet.GetComponent<Rigidbody>();
+            // if (rb != null)
+            // {
+            //     rb.velocity = gunTip.forward * bulletSpeed;
+            // }
+            // Input_Shoot = Input.GetButtonDown("Fire1"); // Example for the old Input System
+            // Debug.Log("Input_Shoot: " + Input_Shoot);
+
+            if (Input_Shoot && bulletPool != null && gunTip != null)
+            {
+                GameObject bullet = bulletPool.GetBullet();
+                if (bullet != null)
+                {
+                    bullet.transform.position = gunTip.position;
+                    bullet.transform.rotation = gunTip.rotation;
+                    bullet.SetActive(true);
+
+                    Bullet bulletScript = bullet.GetComponent<Bullet>();
+                    bulletScript.SetBulletPool(bulletPool); // Set the BulletPool reference
+
+                    Rigidbody rb = bullet.GetComponent<Rigidbody>();
+                    if (rb != null)
+                    {
+                        rb.velocity = gunTip.forward * bulletSpeed;
+                    }
+                }
+            }
+            else
+            {
+                // Debug.LogWarning("BulletPool or FirePoint is not assigned!");
+            }
+        }
+
+
 
         private void Handle_InputMovement()
         {
 
             Vector2 Input;
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
             Input.x = Input_Movement.x == 0? External_Input_Movement.x : Input_Movement.x;
             Input.y = Input_Movement.y == 0? External_Input_Movement.y : Input_Movement.y;
-    #elif UNITY_ANDROID
+#elif UNITY_ANDROID
             Input.x = Input_Movement.x;
             Input.y = Input_Movement.y;
-    #endif
+#endif
             Vector3 WalkTargetDIrection =
-                Input.y * transform.forward * m_speed + 
+                Input.y * transform.forward * m_speed +
                 Input.x * transform.right * m_speed;
 
-            WalkTargetDIrection = Input_Sprint && WalkTargetDIrection == Vector3.zero? transform.forward * m_speed : WalkTargetDIrection;
+            WalkTargetDIrection = Input_Sprint && WalkTargetDIrection == Vector3.zero ? transform.forward * m_speed : WalkTargetDIrection;
 
             m_MovementDirection.x = Mathf.MoveTowards(m_MovementDirection.x, WalkTargetDIrection.x, m_Acceleration * Time.deltaTime);
-            m_MovementDirection.z = Mathf.MoveTowards(m_MovementDirection.z, WalkTargetDIrection.z, m_Acceleration * Time.deltaTime);        
+            m_MovementDirection.z = Mathf.MoveTowards(m_MovementDirection.z, WalkTargetDIrection.z, m_Acceleration * Time.deltaTime);
 
             if (m_LandMomentum != m_OriginalLandMomentum)
             {
@@ -173,7 +229,7 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
 
         private void Handle_AirMovement()
         {
-            
+
             if (m_OnLanded)
             {
 
@@ -184,24 +240,24 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
 
             if (m_CharacterController.isGrounded)
             {
-                
-                if(m_IsFloating) m_IsFloating = false;
+
+                if (m_IsFloating) m_IsFloating = false;
 
                 // force player to stick to ground or else CharacterController.IsGrounded will return true
                 m_MovementDirection.y = m_StickToGround;
 
-                if (Input_Jump) 
+                if (Input_Jump)
                 {
                     PlaySound(m_JumpSound);
                     m_MovementDirection.y = m_JumpForce;
                     if (m_JumpSound != null) PlaySound(m_JumpSound);
                 }
 
-            } 
-            else 
+            }
+            else
             {
 
-                if(!m_IsFloating) m_IsFloating = true;
+                if (!m_IsFloating) m_IsFloating = true;
 
                 // Prevent floating if jumping is blocked 
                 if (m_CharacterController.collisionFlags == CollisionFlags.Above)
@@ -209,17 +265,17 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
                     m_MovementDirection.y = 0.0f;
                 }
 
-                m_MovementDirection.y -= m_Gravity * Time.deltaTime;  
+                m_MovementDirection.y -= m_Gravity * Time.deltaTime;
 
             }
-            
+
         }
 
         private void Handle_Crouch()
         {
-            
+
             //Crouching State
-            if (Input_Crouch && transform.localScale.y != (m_CrouchHeight / m_CharacterController.height) * m_OriginalScale.y) 
+            if (Input_Crouch && transform.localScale.y != (m_CrouchHeight / m_CharacterController.height) * m_OriginalScale.y)
             {
 
                 CrouchTransition(m_CrouchHeight, Time.deltaTime);
@@ -229,33 +285,33 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
             // Standing State
             if (!Input_Crouch && transform.localScale.y != m_OriginalScale.y)
             {
-                
+
                 CrouchTransition(m_CharacterController.height, -Time.deltaTime);
 
             }
-            
+
             void CrouchTransition(float TargetHeight, float value)
             {
-                
+
                 // Origin is on top of head to avoid any collision with the player it self
                 Vector3 Origin = transform.position + (transform.localScale.y / m_OriginalScale.y) * m_CharacterController.height * Vector3.up;
-                if (Physics.Raycast(Origin, Vector3.up, m_CharacterController.height - Origin.y)) 
+                if (Physics.Raycast(Origin, Vector3.up, m_CharacterController.height - Origin.y))
                 {
                     Input_Crouch = true;
                     return;
                 }
 
                 m_CrouchTimeElapse += value;
-                
+
                 m_CrouchTimeElapse = Mathf.Clamp(m_CrouchTimeElapse, 0, m_CrouchDelay);
-                
+
                 transform.localScale = new Vector3(
-                    transform.localScale.x, 
-                    Mathf.Lerp(m_OriginalScale.y, (m_CrouchHeight / m_CharacterController.height) * m_OriginalScale.y, m_CrouchTimeElapse / m_CrouchDelay), 
-                    transform.localScale.z); 
+                    transform.localScale.x,
+                    Mathf.Lerp(m_OriginalScale.y, (m_CrouchHeight / m_CharacterController.height) * m_OriginalScale.y, m_CrouchTimeElapse / m_CrouchDelay),
+                    transform.localScale.z);
 
             }
-            
+
         }
 
         private void Handle_Step()
@@ -269,16 +325,16 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
         private void UpdateWalkBob()
         {
 
-            if ((m_IsWalking && !m_IsFloating) || !m_WalkBob.BackToOriginalPosition) 
+            if ((m_IsWalking && !m_IsFloating) || !m_WalkBob.BackToOriginalPosition)
             {
-                float speed = m_MovementVelocity == 0? m_WalkSpeed : m_MovementVelocity;
+                float speed = m_MovementVelocity == 0 ? m_WalkSpeed : m_MovementVelocity;
                 m_HeadMovement += m_WalkBob.UpdateBobValue(speed, m_WalkBob.BobRange);
-            } 
+            }
             else if (!m_IsWalking || !m_IdleBob.BackToOriginalPosition)
             {
                 m_HeadMovement += m_IdleBob.UpdateBobValue(1, m_IdleBob.BobRange);
             }
-            
+
         }
 
         // Utility function

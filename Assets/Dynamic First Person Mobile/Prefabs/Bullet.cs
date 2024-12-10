@@ -6,17 +6,24 @@ public class Bullet : MonoBehaviour
     public float lifetime = 5f;
 
     private BulletPool bulletPool;
+    private float timeSinceSpawn;
 
-    void Start()
+    void OnEnable()
     {
-        // Destroy the bullet after a set lifetime
-        Destroy(gameObject, lifetime);
+        timeSinceSpawn = 0f;
     }
 
     void Update()
     {
         // Move the bullet forward
         transform.Translate(Vector3.forward * speed * Time.deltaTime);
+
+        // Check if the bullet has exceeded its lifetime
+        timeSinceSpawn += Time.deltaTime;
+        if (timeSinceSpawn >= lifetime)
+        {
+            bulletPool.ReturnBullet(gameObject);
+        }
     }
 
     void OnCollisionEnter(Collision col)
