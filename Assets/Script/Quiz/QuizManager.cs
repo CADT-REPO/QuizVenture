@@ -1,7 +1,11 @@
-/* using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 using TMPro; // Include if using TextMeshPro
+
+// update logic for randomize the question set
+using System.Collections.Generic;
+using System.IO;
+using Newtonsoft.Json;
 
 public class QuizManager : MonoBehaviour
 {
@@ -10,126 +14,15 @@ public class QuizManager : MonoBehaviour
     public TextMeshProUGUI timerText; // Text component for the timer
     public float timeLimit = 10f; // Time limit per question in seconds
 
-    private float timeRemaining;
-    private bool isTimerRunning = true;
-
-    void Start()
-    {
-        StartNewQuestion();
-        // timeRemaining = timeLtimeLimitimit;
-        isTimerRunning = true;
-    }
-
-    void Update()
-    {
-        if (isTimerRunning)
-        {
-            timeRemaining -= Time.deltaTime;
-            timerText.text = Mathf.Ceil(timeRemaining).ToString();
-
-            if (timeRemaining <= 0)
-            {
-                isTimerRunning = false;
-                timerText.text = "0";
-                // Trigger the logic for what happens when the timer runs out
-                OnTimeOut();
-            }
-        }
-
-    //      if (isTimerRunning)
-    // {
-    //     if (timeRemaining > 0)
-    //     {
-    //         timeRemaining -= Time.deltaTime; // Decrease timer
-    //         Debug.Log("Time remaining: " + timeRemaining); // For debugging
-    //     }
-    //     else
-    //     {
-    //         isTimerRunning = false; // Stop the timer
-    //         Debug.Log("Time is up!");
-    //         HandleTimeOut(); // Handle when time runs out
-    //     }
-    // }
-    }
-
-
-    public void StartNewQuestion()
-    {
-        // Reset timer and start it
-        timeRemaining = timeLimit;
-        isTimerRunning = true;
-
-        // Update the question and button texts here
-        questionText.text = "What's the point of living?";
-
-        // Example of setting button text
-        answerButtons[0].GetComponentInChildren<TextMeshProUGUI>().text = "to eat and die";
-        answerButtons[1].GetComponentInChildren<TextMeshProUGUI>().text = "to love and die";
-        answerButtons[2].GetComponentInChildren<TextMeshProUGUI>().text = "to earn money and die";
-        answerButtons[3].GetComponentInChildren<TextMeshProUGUI>().text = "to grow old and die";
-
-        //  // Attach listeners dynamically (optional if not using Unity's Inspector)
-        // for (int i = 0; i < answerButtons.Length; i++)
-        // {
-        //     int index = i; // Capture loop variable
-        //     answerButtons[i].onClick.AddListener(() => OnAnswerSelected(index));
-        // }
-    }
-
-    public void OnAnswerSelected(int buttonIndex)
-    {
-        Debug.Log("Button clicked: " + buttonIndex);
-        isTimerRunning = false;
-
-        // Check if the answer is correct and handle scoring here
-        if (buttonIndex == 3) // Replace with actual answer checking logic
-        {
-            Debug.Log("Correct Answer!");
-        }
-        else
-        {
-            Debug.Log("Wrong Answer.");
-        }
-
-        // Logic for the next question or game over can be added here
-    }
-
-    void OnTimeOut()
-    {
-        Debug.Log("Time's up!");
-        // Handle time-out logic such as displaying a message or going to the next question
-    }
-
-    //  private void HandleTimeOut()
-    // {
-    //     Debug.Log("Time ran out. Moving to the next question.");
-    //     // Implement logic to handle timeouts (e.g., show "time's up" feedback, score penalties)
-    //     StartNewQuestion(); // Load the next question
-    // }
-
-
-
-}
- */
-
-
- using UnityEngine;
-using UnityEngine.UI;
-using TMPro; // Include if using TextMeshPro
-
-public class QuizManager : MonoBehaviour
-{
-    public TextMeshProUGUI questionText; // Text component to display the question
-    public Button[] answerButtons; // Array of answer buttons
-    public TextMeshProUGUI timerText; // Text component for the timer
-    public float timeLimit = 10f; // Time limit per question in seconds
-
+    private List<Question> allQuestions = new List<Question>();
+    private Question currentQuestion;
     private float timeRemaining;
     private bool isTimerRunning = true;
     private bool correctAnswerSelected = false;
 
     void Start()
     {
+        LoadQuestion();
         StartNewQuestion();
     }
 
@@ -149,52 +42,90 @@ public class QuizManager : MonoBehaviour
         }
     }
 
+    public void LoadQuestion()
+    {
+        string path = Path.Combine(Application.streamingAssetsPath, "questionSet.JSON");
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+            allQuestions = JsonConvert.DeserializeObject<List<Question>>(json);
+        }
+        else
+        {
+            Debug.LogError("Questions JSON file not found.");
+        }
+    }
+
     public void StartNewQuestion()
     {
-        // Reset timer and start it
+        if(allQuestions.Count == 0){
+            Debug.LogError("No question available to display");
+            return;
+        }
+
+        //  Randomly select a question
+        int randomIndex = Random.Range(0, allQuestions.Count);
+        currentQuestion = allQuestions[randomIndex];
+        allQuestions.RemoveAt(randomIndex); //Optionally remove questions to avoid repeats
+
+        // reset timer and start it
+
         timeRemaining = timeLimit;
         isTimerRunning = true;
         correctAnswerSelected = false;
 
-        // Update the question and button texts
-        questionText.text = "What's the point of living?";
-        string[] answers = {
-            "to eat and die",
-            "to love and die",
-            "to earn money and die",
-            "to grow old and die"
-        };
+        // update the question text
+        questionText.text = currentQuestion.question;
 
-        // Assign button texts and listeners dynamically
-        for (int i = 0; i < answerButtons.Length; i++)
-        {
-            int index = i; // Capture loop variable
-            answerButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = answers[i];
-            answerButtons[i].onClick.RemoveAllListeners(); // Clear previous listeners
-            answerButtons[i].onClick.AddListener(() => OnAnswerSelected(index));
+        // randomize and assign answer button
+        List<string> allAnswers = new List<string>(currentQuestion.answers.correct);
+        allAnswers.AddRange(currentQuestion.answers.wrong);
+        shuffleList(allAnswers);
+
+        for (int i=0; i < answerButtons.Length; i++){
+            if(i < allAnswers.Count){
+                int index = i;
+                answerButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = allAnswers[i];
+                answerButtons[i].onClick.RemoveAllListeners();
+                answerButtons[i].onClick.AddListener(() => OnAnswerSelected(index, allAnswers[i]));
+            }
+            else {
+                answerButtons[i].gameObject.SetActive(false);
+            }
         }
     }
 
-    public void OnAnswerSelected(int buttonIndex)
+    public void OnAnswerButtonClicked(int buttonIndex, string selectedAnswer)
     {
-        Debug.Log("Button clicked: " + buttonIndex);
+        OnAnswerSelected(buttonIndex, selectedAnswer);
+    }
+    
+    public void OnAnswerSelected(int buttonIndex, string selectedAnswer)
+    {
+        Debug.Log("Button clicked: " + buttonIndex + " - " + selectedAnswer);
 
-        // Check if the selected answer is correct
-        if (buttonIndex == 3) // Replace with your correct answer logic
-        {
-            Debug.Log("Correct Answer!");
-            correctAnswerSelected = true; // Stop the timer once the correct answer is chosen
-            isTimerRunning = false; // Optionally stop the timer logic if not needed after this
-        }
-        else
-        {
-            Debug.Log("Wrong Answer. Try again!");
-        }
+       if(currentQuestion.answers.correct.Contains(selectedAnswer)){
+            Debug.Log("correct answer!!");
+            correctAnswerSelected = true; 
+            isTimerRunning = false;
+       }
+       else {
+            Debug.Log("wrong answer. try again");
+       }
     }
 
     void OnTimeOut()
     {
         Debug.Log("Time's up!");
         // Handle time-out logic, e.g., proceed to the next question
+    }
+
+    void shuffleList<T>(List<T> list){
+        for (int i = list.Count -1; i > 0; i--){
+            int j = Random.Range(0, i+1);
+            T temp = list[i];
+            list[i] = list[j];
+            list[j] = temp;
+        }
     }
 }
