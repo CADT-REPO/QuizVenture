@@ -16,6 +16,11 @@ namespace FirstPersonMobileTools.Utility
                 item?.Invoke();
             }
         }
+        private void Start()
+        {
+            // Uncomment if needed
+            // Default(); // Ensure this isn't accidentally triggering Default
+        }
 
     }
 
