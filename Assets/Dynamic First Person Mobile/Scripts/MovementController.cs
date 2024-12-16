@@ -10,6 +10,17 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
 
     public class MovementController : MonoBehaviour
     {
+        // GUN
+        [SerializeField] public Transform cameraTransform;
+        [SerializeField] public int rayHittingRange = 20;
+        [SerializeField] public AudioClip gunShotSound;
+        [SerializeField] private Ray forwardRay;
+
+        [SerializeField] public ParticleSystem muzzleFlash;
+
+        [SerializeField] public GameObject hitEffect;
+
+        // Movement
 
         #region Class accessible field
         [HideInInspector] public bool Input_Sprint { get; set; }    // Accessed through [Sprint button] in the scene
@@ -54,7 +65,7 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
         // Shooting Settings
         [SerializeField] private BulletPool bulletPool; // Reference to the bullet pool
         [SerializeField] private Transform gunTip; // Reference to the gun tip
-        [SerializeField] private float bulletSpeed = 20f; // Speed of the bullet
+        [SerializeField] private float bulletSpeed = 2f; // Speed of the bullet
         #endregion
 
         // Main reference class
@@ -137,14 +148,16 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
 
         private void Update()
         {
+            forwardRay = new Ray(cameraTransform.position, cameraTransform.forward);
+            Debug.DrawRay(forwardRay.origin, forwardRay.direction * rayHittingRange, Color.red);
 
             Handle_InputMovement();
             Handle_AirMovement();
             Handle_Crouch();
             Handle_Step();
-            HandleShooting();
+            Shoot();
             UpdateWalkBob();
-
+            // HandleShooting();
             m_CharacterController.Move(m_MovementDirection * Time.deltaTime);
 
             m_Camera.transform.localPosition += m_HeadMovement;
@@ -196,6 +209,39 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
                 // Debug.LogWarning("BulletPool or FirePoint is not assigned!");
             }
         }
+        private void Shoot()
+        {
+            RaycastHit hit;
+            
+
+            // Check if the shoot button is pressed
+            if (Input_Shoot)
+            {
+                GetComponent<Animator>().SetTrigger("Shooting");
+                if (Physics.Raycast(forwardRay, out hit, rayHittingRange))
+                {
+                    Debug.Log("Hit: " + hit.transform.name);
+                    Enemy enemy = hit.transform.GetComponent<Enemy>();
+            
+                    GameObject hitPoint = Instantiate(hitEffect, hit.point, Quaternion.LookRotation(hit.normal));
+                    if(enemy != null)
+                    {
+                        enemy.TakeDamage(1);
+                    }
+                    Debug.Log("Destroy called for hitPoint.");
+                }
+                else
+                {
+                    Debug.Log("No hit detected.");
+
+                }
+                muzzleFlash.Play();
+                AudioSource.PlayClipAtPoint(gunShotSound, transform.position);
+
+            }
+
+        }
+
 
 
 
@@ -344,6 +390,8 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
             if (m_AudioSource.clip != null) m_AudioSource.PlayOneShot(m_AudioSource.clip);
         }
 
+
     }
 
 }
+
