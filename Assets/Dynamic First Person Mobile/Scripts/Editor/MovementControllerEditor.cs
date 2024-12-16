@@ -51,6 +51,15 @@ public class MovementControllerEditor : Editor {
         EditorGUILayout.PropertyField(serializedObject.FindProperty("gunTip"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("bulletSpeed"));
 
+        EditorGUILayout.Space(10f);
+        EditorGUILayout.LabelField("Gun Settings", EditorStyles.boldLabel);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("cameraTransform"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("rayHittingRange"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("gunShotSound"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("muzzleFlash"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("hitEffect"));
+
+
         serializedObject.ApplyModifiedProperties();
 
     }
