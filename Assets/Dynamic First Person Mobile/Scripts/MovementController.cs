@@ -212,8 +212,6 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
         private void Shoot()
         {
             RaycastHit hit;
-            
-
             // Check if the shoot button is pressed
             if (Input_Shoot)
             {
@@ -222,9 +220,9 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
                 {
                     Debug.Log("Hit: " + hit.transform.name);
                     Enemy enemy = hit.transform.GetComponent<Enemy>();
-            
                     GameObject hitPoint = Instantiate(hitEffect, hit.point, Quaternion.LookRotation(hit.normal));
-                    if(enemy != null)
+                    Destroy(hitPoint, 0.5f);
+                    if (enemy != null)
                     {
                         enemy.TakeDamage(1);
                     }
@@ -236,7 +234,9 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
 
                 }
                 muzzleFlash.Play();
-                AudioSource.PlayClipAtPoint(gunShotSound, transform.position);
+                AudioSource.PlayClipAtPoint(gunShotSound, transform.position);  
+                
+                Input_Shoot = false;
 
             }
 
