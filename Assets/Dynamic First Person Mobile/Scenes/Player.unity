@@ -14030,7 +14030,7 @@ PrefabInstance:
       objectReference: {fileID: 1787388934}
     - target: {fileID: 7018125087963231956, guid: e21fa9764e2ccb5419240cabd00065c2, type: 3}
       propertyPath: m_Name
-      value: New Prefab (1)
+      value: Enemy2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -27652,7 +27652,7 @@ PrefabInstance:
       objectReference: {fileID: 1787388934}
     - target: {fileID: 7018125087963231956, guid: e21fa9764e2ccb5419240cabd00065c2, type: 3}
       propertyPath: m_Name
-      value: New Prefab (2)
+      value: Enemy1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -27816,7 +27816,7 @@ PrefabInstance:
       objectReference: {fileID: 1787388934}
     - target: {fileID: 7018125087963231956, guid: e21fa9764e2ccb5419240cabd00065c2, type: 3}
       propertyPath: m_Name
-      value: New Prefab
+      value: Enemy3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -29264,7 +29264,7 @@ GameObject:
   - component: {fileID: 785111611}
   - component: {fileID: 785111610}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -68066,7 +68066,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1929594868153826824, guid: 75e1724d6739d834da0c7d8b4aa2deff, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 17.409601
+      value: 17.40967
       objectReference: {fileID: 0}
     - target: {fileID: 2116700636552442792, guid: 75e1724d6739d834da0c7d8b4aa2deff, type: 3}
       propertyPath: m_CullingMask.m_Bits
