@@ -219,7 +219,7 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
                 if (Physics.Raycast(forwardRay, out hit, rayHittingRange))
                 {
                     Debug.Log("Hit: " + hit.transform.name);
-                    Enemy enemy = hit.transform.GetComponent<Enemy>();
+                    EnemyScript enemy = hit.transform.GetComponent<EnemyScript>();
                     GameObject hitPoint = Instantiate(hitEffect, hit.point, Quaternion.LookRotation(hit.normal));
                     Destroy(hitPoint, 0.5f);
                     if (enemy != null)
