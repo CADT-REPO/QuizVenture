@@ -36,6 +36,7 @@ public class EnemyScript : MonoBehaviour
     bool m_isPatrol;
     bool m_caughtPlayer;
 
+    public int Health = 10;
 
     // Start is called before the first frame update
     void Start()
@@ -82,6 +83,14 @@ public class EnemyScript : MonoBehaviour
             Patrolling();
         }
 
+    }
+    public void TakeDamage(int damage)
+    {
+        Health -= damage;
+        if (Health <= 0)
+        {
+            Destroy(this.gameObject);
+        }
     }
 
     void CaughtPlayer()
