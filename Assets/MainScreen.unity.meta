@@ -1,5 +1,10 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/MainScreen.unity.meta
 guid: 38fef45619f972a4684d24dcb7474dcd
+========
+guid: adb38cb0ef6e6ea45b590e272f303652
+folderAsset: yes
+>>>>>>>> player-enemy-merge:Assets/Animation.meta
 DefaultImporter:
   externalObjects: {}
   userData: 
