@@ -2,70 +2,70 @@
     {
         "question": "What is the capital of Cambodia?",
         "answers": {
-            "correct": ["Phnom Penh", "The capital city of Cambodia", "Cambodia's capital", "Phnom Penh city"],
+            "correct": ["Phnom Penh", "Capital of Cambodia", "Cambodia's capital", "Phnom Penh city"],
             "wrong": ["Siem Reap", "Battambang", "Sihanoukville", "Kampong Cham", "Kep", "Koh Kong"]
         }
     },
     {
         "question": "Who was the first King of Cambodia after independence?",
         "answers": {
-            "correct": ["King Norodom Sihanouk", "King Norodom", "King Sihanouk", "King Father Sihanouk"],
-            "wrong": ["King Sisowath", "King Preah Bat Samdech Norodom Sihamoni", "King Ang Duong", "King Norodom Suramarit", "King Norodom Bopha Devi", "King Sihanouk II"]
+            "correct": ["King Norodom Sihanouk", "Norodom Sihanouk", "King Sihanouk", "Sihanouk"],
+            "wrong": ["King Sisowath", "King Sihamoni", "King Ang Duong", "King Suramarit", "King Bopha Devi", "King Sihanouk II"]
         }
     },
     {
         "question": "What is the official language of Cambodia?",
         "answers": {
-            "correct": ["Khmer", "Cambodian", "Khmer language", "Cambodia's official language"],
+            "correct": ["Khmer", "Cambodian", "Khmer lang", "Official language"],
             "wrong": ["Thai", "Lao", "Vietnamese", "English", "Chinese", "French"]
         }
     },
     {
         "question": "Which famous temple is located in Angkor Wat?",
         "answers": {
-            "correct": ["Angkor Wat", "The largest religious monument", "Temple of Angkor Wat", "Wat Angkor"],
-            "wrong": ["Bayon Temple", "Ta Prohm", "Preah Vihear", "Banteay Srei", "Angkor Thom", "Phnom Kulen"]
+            "correct": ["Angkor Wat", "Largest temple", "Temple in Angkor", "Wat Angkor"],
+            "wrong": ["Bayon", "Ta Prohm", "Preah Vihear", "Banteay Srei", "Angkor Thom", "Phnom Kulen"]
         }
     },
     {
         "question": "What is the traditional Cambodian dance called?",
         "answers": {
-            "correct": ["Apsara Dance", "Khmer dance", "Classical Apsara", "Cambodian traditional dance"],
+            "correct": ["Apsara Dance", "Khmer dance", "Apsara", "Traditional dance"],
             "wrong": ["Bharatanatyam", "Khon", "Kabuki", "Ballet", "Samba", "Tango"]
         }
     },
     {
         "question": "Which river flows through Phnom Penh?",
         "answers": {
-            "correct": ["Mekong River", "The Mekong", "Phnom Penh River", "Mekong in Phnom Penh"],
-            "wrong": ["Tonle Sap", "Irrawaddy River", "Red River", "Sena River", "Sangker River", "Kampong River"]
+            "correct": ["Mekong River", "The Mekong", "Phnom Penh River", "Mekong"],
+            "wrong": ["Tonle Sap", "Irrawaddy", "Red River", "Sena", "Sangker", "Kampong"]
         }
     },
     {
         "question": "What is the national dish of Cambodia?",
         "answers": {
-            "correct": ["Amok", "Fish Amok", "Amok Trey", "Traditional Khmer Amok"],
-            "wrong": ["Pad Thai", "Pho", "Sushi", "Biryani", "Pizza", "Hamburger"]
+            "correct": ["Amok", "Fish Amok", "Amok Trey", "Khmer Amok"],
+            "wrong": ["Pad Thai", "Pho", "Sushi", "Biryani", "Pizza", "Burger"]
         }
     },
     {
         "question": "What year did Cambodia gain independence from France?",
         "answers": {
-            "correct": ["1953", "The year 1953", "In 1953", "Cambodia's independence year"],
+            "correct": ["1953", "In 1953", "Year 1953", "Independence year"],
             "wrong": ["1945", "1965", "1970", "1955", "1950", "1962"]
         }
     },
     {
         "question": "What is the name of the famous Cambodian water festival?",
         "answers": {
-            "correct": ["Bon Om Touk", "Water Festival", "Cambodian Water Festival", "Festival of Water"],
-            "wrong": ["Songkran", "Moon Festival", "Tet", "New Year's Day", "Harvest Festival", "Pchum Ben"]
+            "correct": ["Bon Om Touk", "Water Festival", "Cambodian Festival", "Festival of Water"],
+            "wrong": ["Songkran", "Moon Fest", "Tet", "New Year", "Harvest Fest", "Pchum Ben"]
         }
     },
     {
         "question": "Which animal is considered sacred in Cambodian culture?",
         "answers": {
-            "correct": ["Elephant", "Sacred animal in Cambodia", "The elephant", "Cambodian sacred animal"],
+            "correct": ["Elephant", "Sacred animal", "The elephant", "Sacred in Cambodia"],
             "wrong": ["Tiger", "Cow", "Peacock", "Lion", "Snake", "Horse"]
         }
     }

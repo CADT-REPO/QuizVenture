@@ -33,6 +33,10 @@ public class QuizManager : MonoBehaviour
     private int minutes;
     private int seconds;
 
+    // to random position of treasure button
+    public Button targetButton; 
+    public RectTransform canvasRect;
+
     void Start()
     {
         // LoadQuestion();
@@ -47,6 +51,15 @@ public class QuizManager : MonoBehaviour
         mainScreen.SetActive(true);
         questionScreen.SetActive(false);
 
+        if (targetButton != null && canvasRect != null)
+        {
+            RandomizeTreasure();
+        }
+        else
+        {
+            Debug.LogError("Button or Canvas not assigned in the Inspector.");
+        }
+
     }
 
  void UpdateGameTimer()
@@ -59,7 +72,7 @@ public class QuizManager : MonoBehaviour
 
         minutes = Mathf.FloorToInt(gameTime / 60);
         seconds = Mathf.FloorToInt(gameTime % 60);
-        Debug.Log($"Minutes: {minutes}, Seconds: {seconds}");
+        // Debug.Log($"Minutes: {minutes}, Seconds: {seconds}");
 
         // Update the game timer text
         gameTimerText.text = $"{minutes}mn {seconds:D2}s";
@@ -206,7 +219,7 @@ public class QuizManager : MonoBehaviour
             isTimerRunning = false;
 
 
-                isGameRunning = false;
+                // isGameRunning = false;
                 gameTime += 10f;
                 if(gameTime > 120f){
                     gameTime = 120f;
@@ -216,8 +229,11 @@ public class QuizManager : MonoBehaviour
                 seconds = Mathf.FloorToInt(gameTime % 60);
                 
                 gameTimerText.text = $"{minutes}mn {seconds:D2}s";
+
                 questionScreen.SetActive(false);
                 mainScreen.SetActive(true);
+                RandomizeTreasure();
+                // isGameRunning = true;
 
        }
        else {
@@ -228,6 +244,8 @@ public class QuizManager : MonoBehaviour
     void OnTimeOut()
     {
         Debug.Log("Time's up!");
+        mainScreen.SetActive(true);
+        questionScreen.SetActive(false);
         // Handle time-out logic, e.g., proceed to the next question
     }
 
@@ -244,5 +262,19 @@ public class QuizManager : MonoBehaviour
     {   
         Debug.Log("game over");
         mainScreen.SetActive(true);
+    }
+    void RandomizeTreasure() {
+        RectTransform buttonRect = targetButton.GetComponent<RectTransform>();
+
+        // get the size of the canvas
+        float canvasWidth = canvasRect.rect.width; 
+        float canvasHeight = canvasRect.rect.height; 
+
+        // calculate random x and y posisition within the canvas bound
+        float randomX = Random.Range(-canvasWidth / 2 + buttonRect.rect.width / 2, canvasWidth / 2 - buttonRect.rect.width / 2);
+        float randomY = Random.Range(-canvasHeight / 2 + buttonRect.rect.height / 2, canvasHeight / 2 - buttonRect.rect.height / 2);
+
+        // Set the button position
+        buttonRect.anchoredPosition = new Vector2(randomX, randomY);
     }
 }
