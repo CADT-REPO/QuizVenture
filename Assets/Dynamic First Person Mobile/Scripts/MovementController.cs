@@ -234,14 +234,14 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
 
                 }
                 muzzleFlash.Play();
-                AudioSource.PlayClipAtPoint(gunShotSound, transform.position);  
-                
+                AudioSource.PlayClipAtPoint(gunShotSound, transform.position);
+
                 Input_Shoot = false;
 
             }
 
         }
-
+        
 
 
 
