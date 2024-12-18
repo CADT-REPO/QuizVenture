@@ -26,10 +26,10 @@ namespace Unity.AI.Navigation.Samples
         void Update()
         {
             if (Input.GetMouseButtonDown(0) && !Input.GetKey(KeyCode.LeftShift))
-            { 
+            {
                 var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                if(Physics.Raycast(ray.origin, ray.direction, out hitInfo)) 
-                { 
+                if (Physics.Raycast(ray.origin, ray.direction, out hitInfo))
+                {
                     agent.destination = hitInfo.point;
                 }
             }
@@ -45,9 +45,9 @@ namespace Unity.AI.Navigation.Samples
         }
         void OnAnimatorMove()
         {
-            if(animator.GetBool("running"))
+            if (animator.GetBool("running"))
             {
-                agent.speed = (animator.deltaPosition / Time.deltaTime).magnitude ;
+                agent.speed = (animator.deltaPosition / Time.deltaTime).magnitude;
             }
         }
     }
