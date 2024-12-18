@@ -863,7 +863,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1154458712}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: QuizManager, Assembly-CSharp
         m_MethodName: OnAnswerSelected
         m_Mode: 3
@@ -1324,7 +1324,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1154458712}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: QuizManager, Assembly-CSharp
         m_MethodName: OnAnswerSelected
         m_Mode: 3
@@ -2019,7 +2019,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1154458712}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: QuizManager, Assembly-CSharp
         m_MethodName: OnAnswerSelected
         m_Mode: 3
@@ -2419,7 +2419,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1154458712}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: QuizManager, Assembly-CSharp
         m_MethodName: OnAnswerSelected
         m_Mode: 3
