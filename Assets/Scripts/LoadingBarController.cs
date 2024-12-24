@@ -19,7 +19,7 @@ public class LoadingBarController : MonoBehaviour
         {
             Debug.Log("Starting scene load...");
             LoaderUI.SetActive(true); // Display the loading screen
-            StartCoroutine(LoadScene_Coroutine(index)); // Start loading the scene
+            StartCoroutine(LoadScene_Coroutine(2)); // Start loading the scene
         }
         else
         {

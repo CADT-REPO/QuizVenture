@@ -134,10 +134,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 2367029993599221461}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57ce1fa2123854d2eabd0d4d01a8dbba, type: 3}
+  m_Script: {fileID: 11500000, guid: 066304e9d868b154c82a090d152edf2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
+  treasureBoxPrefab: {fileID: 0}
+  spawnAreaMin: {x: 0, y: 0, z: 0}
+  spawnAreaMax: {x: 0, y: 0, z: 0}
+  fixedYPosition: 0
+  numberOfBoxes: 5
 --- !u!95 &8396015310723822581
 Animator:
   serializedVersion: 5
