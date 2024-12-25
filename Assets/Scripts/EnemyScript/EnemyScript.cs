@@ -8,6 +8,7 @@ public class EnemyScript : MonoBehaviour
 {
 
     public NavMeshAgent agent;
+    public Animator animator;
     public float startWaitTime = 4;
     public float timeToRotate = 2;
     public float speedWalk = 6;
@@ -37,6 +38,7 @@ public class EnemyScript : MonoBehaviour
     bool m_caughtPlayer;
 
     public int Health = 10;
+    private int hitCount = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -53,6 +55,8 @@ public class EnemyScript : MonoBehaviour
         player = GameObject.FindWithTag("Player").transform;
         m_currentWayPointIndex = 0;
         agent = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
+
 
         agent.isStopped = false;
         agent.speed = speedWalk;
@@ -60,10 +64,38 @@ public class EnemyScript : MonoBehaviour
         if (m_currentWayPointIndex >= 0 && m_currentWayPointIndex < wayPoints.Length)
         {
             agent.SetDestination(wayPoints[m_currentWayPointIndex].position);
+            print(wayPoints[m_currentWayPointIndex].position);
         }
         else
         {
             Debug.LogError("Invalid waypoint index: " + m_currentWayPointIndex);
+        }
+
+    }
+
+
+    public void PlayHitTransition()
+    {
+        if (animator != null)
+        {
+            animator.SetTrigger("Hit");
+        }
+    }
+
+    public void OnBulletHit()
+    {
+        hitCount++;
+        if (hitCount == 1) 
+        {
+            // idle attack mode
+            Debug.Log("Playing Hit Transition Animation");
+            animator.SetTrigger("Hit");
+        }
+        else
+        {
+            // attack mode 
+            Debug.Log("Switching to Attack Mode Animation");
+            animator.SetTrigger("Attack");
         }
 
     }
@@ -89,9 +121,39 @@ public class EnemyScript : MonoBehaviour
         Health -= damage;
         if (Health <= 0)
         {
-            Destroy(this.gameObject);
+            Debug.Log("Enemy has been slained");
+            //animator.SetTrigger("Die");
+            Die();
+            //Destroy(this.gameObject);
+        } 
+        else if (Health <= 2)
+        {
+            Debug.Log("Enemy stunned");
+            animator.SetTrigger("Dizzy");
         }
     }
+
+    public void Die()
+    {
+        Debug.Log("Enemy has been slain");
+        animator.SetTrigger("Die");
+
+        // Start a coroutine to wait for the animation to finish before destroying the object
+        StartCoroutine(DestroyAfterDelay());
+    }
+
+    private IEnumerator DestroyAfterDelay()
+    {
+        // Get the length of the "Die" animation (optional, see note below)
+        float animationDuration = animator.GetCurrentAnimatorStateInfo(0).length;
+
+        // Wait for the animation to complete
+        yield return new WaitForSeconds(animationDuration);
+
+        // Destroy the enemy object
+        Destroy(this.gameObject);
+    }
+
 
     void CaughtPlayer()
     {
@@ -101,7 +163,7 @@ public class EnemyScript : MonoBehaviour
     void lookingPlayer(Vector3 player)
     {
         agent.SetDestination(player);
-        if (Vector3.Distance(transform.position, player) <= 0.3)
+        if (Vector3.Distance(transform.position, player) <= 1.0f)
         {
             if (m_WaitTime <= 0)
             {
@@ -241,6 +303,7 @@ public class EnemyScript : MonoBehaviour
         {
             if (m_WaitTime <= 0 && !m_caughtPlayer && Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Player").transform.position) >= 6f)
             {
+                print("Player Nearby, Chase!");
                 m_isPatrol = false;
                 m_playerNear = false;
                 Move(speedWalk);

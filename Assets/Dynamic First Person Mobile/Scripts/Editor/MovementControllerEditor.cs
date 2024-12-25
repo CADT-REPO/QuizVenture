@@ -1,5 +1,6 @@
 using UnityEditor;
 using FirstPersonMobileTools.DynamicFirstPerson;
+using UnityEngine;
 
 [CustomEditor(typeof(MovementController))]
 public class MovementControllerEditor : Editor {
@@ -8,8 +9,13 @@ public class MovementControllerEditor : Editor {
         
         serializedObject.Update();
 
+        
+
         MovementController movementController = (MovementController)target;
         EditorGUILayout.Space(10f);
+
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("m_Animator"));
+
 
         EditorGUILayout.LabelField("Input Settings", EditorStyles.boldLabel);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("m_Joystick"));

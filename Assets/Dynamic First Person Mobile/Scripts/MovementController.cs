@@ -10,6 +10,9 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
 
     public class MovementController : MonoBehaviour
     {
+        // animation
+        [SerializeField] private Animator m_Animator;
+
         // GUN
         [SerializeField] public Transform cameraTransform;
         [SerializeField] public int rayHittingRange = 20;
@@ -85,6 +88,7 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
         private float m_OriginalLandMomentum;                       // Slowdown momentum when landing
         private bool m_IsFloating = false;                          // Player state if is in the air
 
+        
 
         private float m_MovementVelocity
         {
@@ -136,6 +140,13 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
             m_AudioSource = GetComponent<AudioSource>();
             m_CharacterController = GetComponent<CharacterController>();
             m_CameraLook = GetComponent<CameraLook>();
+
+            m_Animator = GetComponentInChildren<Animator>();
+
+            if (m_Animator == null)
+            {
+                Debug.LogError("Animator component not found! Assign it in the inspector or ensure it exists.");
+            }
 
             m_CharacterController.height = m_CharacterController.height;
             m_OriginalScale = transform.localScale;
@@ -215,7 +226,8 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
             // Check if the shoot button is pressed
             if (Input_Shoot)
             {
-                GetComponent<Animator>().SetTrigger("Shooting");
+                //m_Animator.SetBool("firing", true);
+                GetComponent<Animator>().SetTrigger("IsShooting");
                 if (Physics.Raycast(forwardRay, out hit, rayHittingRange))
                 {
                     Debug.Log("Hit: " + hit.transform.name);
@@ -225,6 +237,7 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
                     if (enemy != null)
                     {
                         enemy.TakeDamage(1);
+                        enemy.OnBulletHit();
                     }
                     Debug.Log("Destroy called for hitPoint.");
                 }
@@ -235,13 +248,14 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
                 }
                 muzzleFlash.Play();
                 AudioSource.PlayClipAtPoint(gunShotSound, transform.position);
-
                 Input_Shoot = false;
 
             }
+            //m_Animator.SetBool("firing", false);
+
 
         }
-        
+
 
 
 
@@ -271,7 +285,35 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
                 m_MovementDirection.x *= m_LandMomentum / m_OriginalLandMomentum;
                 m_MovementDirection.z *= m_LandMomentum / m_OriginalLandMomentum;
             }
+            // Detect Forward or Backward Movement
+            DetectMovementDirection(Input);
         }
+
+
+        // Function to Detect Movement Direction
+        private void DetectMovementDirection(Vector2 input)
+        {
+            if (m_Animator == null) return;
+
+            if (input.y > 0) // Forward Movement
+            {
+                Debug.Log("Player is moving forward.");
+                m_Animator.SetBool("IsWalking", true);
+            }
+            else if (input.y < 0) // Backward Movement
+            {
+                Debug.Log("Player is moving backward.");
+                m_Animator.SetBool("IsWalking", true);
+            }
+            else // Idle
+            {
+                Debug.Log("Player is idle.");
+                m_Animator.SetBool("IsWalking", false);
+            }
+
+        }
+
+
 
         private void Handle_AirMovement()
         {
