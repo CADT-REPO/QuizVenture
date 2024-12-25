@@ -85,7 +85,7 @@ public class Enemy_Script : MonoBehaviour
 
     public void PlayHitTransition()
     {
-        if (animator != null)
+        if ( animator != null )
         {
             animator.SetTrigger("Hit");
         }

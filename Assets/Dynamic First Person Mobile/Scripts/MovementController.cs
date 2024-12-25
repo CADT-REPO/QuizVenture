@@ -88,7 +88,7 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
         private float m_OriginalLandMomentum;                       // Slowdown momentum when landing
         private bool m_IsFloating = false;                          // Player state if is in the air
 
-        
+
 
         private float m_MovementVelocity
         {
@@ -227,7 +227,9 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
             if (Input_Shoot)
             {
                 //m_Animator.SetBool("firing", true);
-                GetComponent<Animator>().SetTrigger("IsShooting");
+                m_Animator.SetBool("IsShooting", true); // Trigger the animation
+
+                //GetComponent<Animator>().SetTrigger("IsShooting");
                 if (Physics.Raycast(forwardRay, out hit, rayHittingRange))
                 {
                     Debug.Log("Hit: " + hit.transform.name);
@@ -252,8 +254,7 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
 
             }
             //m_Animator.SetBool("firing", false);
-
-
+            m_Animator.SetBool("IsShooting", false);
         }
 
 
@@ -286,7 +287,7 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
                 m_MovementDirection.z *= m_LandMomentum / m_OriginalLandMomentum;
             }
             // Detect Forward or Backward Movement
-            DetectMovementDirection(Input);
+            //DetectMovementDirection(Input);
         }
 
 
