@@ -10,7 +10,7 @@ public class SceneController : MonoBehaviour
     // Manage the Scene
     public void GoToScene1()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
     }
 
     public void GoToScene2()
@@ -21,7 +21,7 @@ public class SceneController : MonoBehaviour
 
     public void GoToScene3()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(2);
     }
 
     // Loads a scene with the loading bar using the LoadingBarController
