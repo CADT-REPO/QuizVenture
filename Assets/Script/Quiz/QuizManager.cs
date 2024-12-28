@@ -6,6 +6,7 @@ using TMPro; // Include if using TextMeshPro
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
+using UnityEngine.SceneManagement;
 
 public class QuizManager : MonoBehaviour
 {
@@ -24,17 +25,18 @@ public class QuizManager : MonoBehaviour
 
     // global main screen
     private float gameTime = 120f;
-     private float gameTimeRemaining;
+    private float gameTimeRemaining;
     private bool isGameRunning = false; // Track game state
     public TextMeshProUGUI gameTimerText; // Game timer text (total game time)
     public Button startButton; // Button to start the game
-
+    public TextMeshProUGUI correctCount; // Text to display the correct count
     // for game timer
     private int minutes;
     private int seconds;
+    private int score = 0;
 
     // to random position of treasure button
-    public Button targetButton; 
+    public Button targetButton;
     public RectTransform canvasRect;
 
     void Start()
@@ -62,30 +64,30 @@ public class QuizManager : MonoBehaviour
 
     }
 
- void UpdateGameTimer()
-{
-    if (isGameRunning)
+    void UpdateGameTimer()
     {
-        gameTime -= 1f;
-
-        Debug.Log($"Game Time: {gameTime}");
-
-        minutes = Mathf.FloorToInt(gameTime / 60);
-        seconds = Mathf.FloorToInt(gameTime % 60);
-        // Debug.Log($"Minutes: {minutes}, Seconds: {seconds}");
-
-        // Update the game timer text
-        gameTimerText.text = $"{minutes}mn {seconds:D2}s";
-
-        if (gameTime <= 0)
+        if (isGameRunning)
         {
-            isGameRunning = false;
-            gameTime = 0;
-            CancelInvoke("UpdateGameTimer");
-            endGame();
+            gameTime -= 1f;
+
+            Debug.Log($"Game Time: {gameTime}");
+
+            minutes = Mathf.FloorToInt(gameTime / 60);
+            seconds = Mathf.FloorToInt(gameTime % 60);
+            // Debug.Log($"Minutes: {minutes}, Seconds: {seconds}");
+
+            // Update the game timer text
+            gameTimerText.text = $"{minutes}mn {seconds:D2}s";
+
+            if (gameTime <= 0)
+            {
+                isGameRunning = false;
+                gameTime = 0;
+                CancelInvoke("UpdateGameTimer");
+                endGame();
+            }
         }
     }
-}
 
 
     void Update()
@@ -94,7 +96,7 @@ public class QuizManager : MonoBehaviour
         // if (isGameRunning)
         // {
         //     // Update the overall game timer
-            
+
         //     gameTime -= Time.deltaTime;
         //     // gameTimeRemaining = gameTime;
         //     gameTimerText.text = Mathf.Ceil(gameTime).ToString();
@@ -148,7 +150,8 @@ public class QuizManager : MonoBehaviour
 
     public void StartNewQuestion()
     {
-        if(allQuestions.Count == 0){
+        if (allQuestions.Count == 0)
+        {
             Debug.LogError("No question available to display");
             return;
         }
@@ -172,24 +175,29 @@ public class QuizManager : MonoBehaviour
         // allAnswers.AddRange(currentQuestion.answers.wrong);
 
         // randomly choose 1 correct answer
-        if(currentQuestion.answers.correct.Count > 0) {
+        if (currentQuestion.answers.correct.Count > 0)
+        {
             int correctIndex = Random.Range(0, currentQuestion.answers.correct.Count);
             allAnswers.Add(currentQuestion.answers.correct[correctIndex]);
         }
 
         // randomly choose 3 wrong answer
-        if (currentQuestion.answers.wrong.Count > 0) {
+        if (currentQuestion.answers.wrong.Count > 0)
+        {
             List<string> wrongAnswers = new List<string>(currentQuestion.answers.wrong);
-            for(int i =0; i < 3 && wrongAnswers.Count >0; i++){
+            for (int i = 0; i < 3 && wrongAnswers.Count > 0; i++)
+            {
                 int wrongIndex = Random.Range(0, wrongAnswers.Count);
                 allAnswers.Add(wrongAnswers[wrongIndex]);
                 wrongAnswers.RemoveAt(wrongIndex);
             }
-        }  
+        }
         shuffleList(allAnswers);
 
-        for (int i=0; i < answerButtons.Length; i++){
-            if(i < allAnswers.Count){
+        for (int i = 0; i < answerButtons.Length; i++)
+        {
+            if (i < allAnswers.Count)
+            {
                 // int index = i;
                 answerButtons[i].gameObject.SetActive(true);
                 answerButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = allAnswers[i];
@@ -198,7 +206,8 @@ public class QuizManager : MonoBehaviour
                 answerButtons[i].onClick.RemoveAllListeners();
                 answerButtons[i].onClick.AddListener(() => OnAnswerSelected(i, answer));
             }
-            else {
+            else
+            {
                 answerButtons[i].gameObject.SetActive(false);
             }
         }
@@ -208,37 +217,55 @@ public class QuizManager : MonoBehaviour
     {
         OnAnswerSelected(buttonIndex, selectedAnswer);
     }
-    
+
     public void OnAnswerSelected(int buttonIndex, string selectedAnswer)
     {
         Debug.Log("Button clicked: " + buttonIndex + " - " + selectedAnswer);
 
-       if(currentQuestion.answers.correct.Contains(selectedAnswer)){
+        if (currentQuestion.answers.correct.Contains(selectedAnswer))
+        {
             Debug.Log("correct answer!!");
-            correctAnswerSelected = true; 
+            correctAnswerSelected = true;
             isTimerRunning = false;
+            correctCount.text = (score++).ToString();
 
 
-                // isGameRunning = false;
-                gameTime += 10f;
-                if(gameTime > 120f){
-                    gameTime = 120f;
-                }
+            // isGameRunning = false;
+            gameTime += 10f;
+            if (gameTime > 120f)
+            {
+                gameTime = 120f;
+            }
 
-                minutes = Mathf.FloorToInt(gameTime / 60);
-                seconds = Mathf.FloorToInt(gameTime % 60);
-                
-                gameTimerText.text = $"{minutes}mn {seconds:D2}s";
+            minutes = Mathf.FloorToInt(gameTime / 60);
+            seconds = Mathf.FloorToInt(gameTime % 60);
 
-                questionScreen.SetActive(false);
-                mainScreen.SetActive(true);
-                RandomizeTreasure();
-                // isGameRunning = true;
+            gameTimerText.text = $"{minutes}mn {seconds:D2}s";
 
-       }
-       else {
+            questionScreen.SetActive(false);
+            mainScreen.SetActive(true);
+            RandomizeTreasure();
+            // isGameRunning = true;
+
+        }
+        else
+        {
+            gameTime -= 10f;
+            if (gameTime <= 0f)
+            {
+                // gameTime = 120f;
+                SceneManager.LoadScene("GameOverScreen");
+            }
+
+            minutes = Mathf.FloorToInt(gameTime / 60);
+            seconds = Mathf.FloorToInt(gameTime % 60);
+
+            gameTimerText.text = $"{minutes}mn {seconds:D2}s";
+
             Debug.Log("wrong answer. try again");
-       }
+            mainScreen.SetActive(true);
+            questionScreen.SetActive(false);
+        }
     }
 
     void OnTimeOut()
@@ -249,9 +276,11 @@ public class QuizManager : MonoBehaviour
         // Handle time-out logic, e.g., proceed to the next question
     }
 
-    void shuffleList<T>(List<T> list){
-        for (int i = list.Count -1; i > 0; i--){
-            int j = Random.Range(0, i+1);
+    void shuffleList<T>(List<T> list)
+    {
+        for (int i = list.Count - 1; i > 0; i--)
+        {
+            int j = Random.Range(0, i + 1);
             T temp = list[i];
             list[i] = list[j];
             list[j] = temp;
@@ -259,16 +288,17 @@ public class QuizManager : MonoBehaviour
     }
 
     void endGame()
-    {   
+    {
         Debug.Log("game over");
         mainScreen.SetActive(true);
     }
-    void RandomizeTreasure() {
+    void RandomizeTreasure()
+    {
         RectTransform buttonRect = targetButton.GetComponent<RectTransform>();
 
         // get the size of the canvas
-        float canvasWidth = canvasRect.rect.width; 
-        float canvasHeight = canvasRect.rect.height; 
+        float canvasWidth = canvasRect.rect.width;
+        float canvasHeight = canvasRect.rect.height;
 
         // calculate random x and y posisition within the canvas bound
         float randomX = Random.Range(-canvasWidth / 2 + buttonRect.rect.width / 2, canvasWidth / 2 - buttonRect.rect.width / 2);

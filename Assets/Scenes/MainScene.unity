@@ -2325,7 +2325,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -1039, y: -5}
-  m_SizeDelta: {x: 30, y: 10}
+  m_SizeDelta: {x: 40, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &233615136 stripped
 GameObject:
@@ -11004,64 +11004,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 340037623}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1154458711
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1154458713}
-  - component: {fileID: 1154458712}
-  m_Layer: 0
-  m_Name: QuizManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1154458712
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1154458711}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dbd00d36840c0b9299f50d4ee202dc0c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mainScreen: {fileID: 1101559964}
-  questionScreen: {fileID: 2102184524}
-  questionText: {fileID: 1878688393}
-  answerButtons:
-  - {fileID: 1813835133}
-  - {fileID: 460996092}
-  - {fileID: 1522717068}
-  - {fileID: 717299731}
-  timerText: {fileID: 801459093}
-  timeLimit: 10
-  gameTimerText: {fileID: 1438786913}
-  startButton: {fileID: 218407894}
-  targetButton: {fileID: 218407894}
-  canvasRect: {fileID: 1101559965}
---- !u!4 &1154458713
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1154458711}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 527, y: 259.5, z: -11.5}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1173374660
 GameObject:
   m_ObjectHideFlags: 0
@@ -15982,7 +15924,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1713205110
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16149,6 +16091,7 @@ MonoBehaviour:
   timeLimit: 10
   gameTimerText: {fileID: 1438786913}
   startButton: {fileID: 218407894}
+  correctCount: {fileID: 2129697613}
   targetButton: {fileID: 218407894}
   canvasRect: {fileID: 1101559965}
 --- !u!1001 &1726771673
@@ -16455,6 +16398,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6598955983150435655, guid: 14ce3dce3332e5b49bec056b3be2f5e9, type: 3}
+      propertyPath: wayPoints.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598955983150435655, guid: 14ce3dce3332e5b49bec056b3be2f5e9, type: 3}
+      propertyPath: wayPoints.Array.data[1]
+      value: 
+      objectReference: {fileID: 262530313}
     - target: {fileID: 7018125087963231956, guid: 14ce3dce3332e5b49bec056b3be2f5e9, type: 3}
       propertyPath: m_Name
       value: EnemyPrefab (1)
@@ -20939,7 +20890,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 2 / 50
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -21482,4 +21433,3 @@ SceneRoots:
   - {fileID: 2123626898}
   - {fileID: 175964332}
   - {fileID: 1723102988}
-  - {fileID: 1154458713}
