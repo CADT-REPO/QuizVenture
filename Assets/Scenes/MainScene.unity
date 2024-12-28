@@ -1604,8 +1604,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: to die
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f3462c07147e856ae926807e53c1f095, type: 2}
-  m_sharedMaterial: {fileID: 8312061629540464704, guid: f3462c07147e856ae926807e53c1f095, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
