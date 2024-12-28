@@ -19,6 +19,13 @@ public class SceneController : MonoBehaviour
         //SceneManager.LoadScene(1);
     }
 
+
+    public void GoToScene4()
+    {
+         SceneManager.LoadScene(2);  // load to main game
+        //SceneManager.LoadScene(1);
+    }
+
     public void GoToScene3()
     {
         SceneManager.LoadScene(2);
