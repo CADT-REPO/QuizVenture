@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 4730316230247956469}
   - component: {fileID: 8094844779158134759}
   - component: {fileID: 312631460204088738}
-  - component: {fileID: 6537285660692422667}
   - component: {fileID: 8396015310723822581}
+  - component: {fileID: 7622804736965488263}
   m_Layer: 0
   m_Name: TreasureBox
   m_TagString: Untagged
@@ -103,7 +103,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -121,27 +121,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63730fb70c4e04fddaac4f35f792a355, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: 
-  Image: {fileID: 0}
-  InteractText: Press F to pickup the item
-  ItemType: 0
---- !u!114 &6537285660692422667
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2367029993599221461}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 066304e9d868b154c82a090d152edf2a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  treasureBoxPrefab: {fileID: 0}
-  spawnAreaMin: {x: 0, y: 0, z: 0}
-  spawnAreaMax: {x: 0, y: 0, z: 0}
-  fixedYPosition: 0
-  numberOfBoxes: 5
 --- !u!95 &8396015310723822581
 Animator:
   serializedVersion: 5
@@ -152,7 +131,7 @@ Animator:
   m_GameObject: {fileID: 2367029993599221461}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: cc77cda921af54a14b1b064a850bc160, type: 2}
+  m_Controller: {fileID: 9100000, guid: 87d218d4a6b8e214e9e885d0bea0ed37, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -163,6 +142,21 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &7622804736965488263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2367029993599221461}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a718ee5fc3dd4ba887038e095f601d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerTag: MainCamera
+  interactionButtonPrefab: {fileID: 1017314229424769678, guid: 639c0310af80a43e594d4aacb30ae5ef, type: 3}
+  interactionDistance: 3
 --- !u!1 &8545284659654410890
 GameObject:
   m_ObjectHideFlags: 0

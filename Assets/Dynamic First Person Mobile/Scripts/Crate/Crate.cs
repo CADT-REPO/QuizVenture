@@ -2,48 +2,40 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EItemType
+public class Crate : MonoBehaviour
 {
-    Default,
-    Consumable,
-    Weapon
-}
-
-public class InteractableItemBase : MonoBehaviour
-{
-    public string Name;
-
-    public Sprite Image;
-
-    public string InteractText = "Press F to pickup the item";
-
-    public EItemType ItemType;
-
-    public virtual void OnInteractAnimation(Animator animator)
-    {
-        animator.SetTrigger("tr_pickup");
-    }
-
-    public virtual void OnInteract()
-    {
-    }
-
-    public virtual bool CanInteract(Collider other)
-    {
-        return true;   
-    }
-}
-public class Crate : InteractableItemBase {
-
     private bool mIsOpen = false;
+    private Animator mAnimator;
 
-    public override void OnInteract()
+    private void Start()
     {
-        InteractText = "Press F to ";
+        mAnimator = GetComponent<Animator>();
+        if (mAnimator == null)
+        {
+            Debug.LogError("Animator not found on the Crate object.");
+        }
+    }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        TryInteraction(other);
+    }
+
+    private void TryInteraction(Collider other)
+    {
+        if (other.CompareTag("Player")) // Use 'E' for interaction
+        {
+            OnInteract();
+        }
+    }
+
+    public void OnInteract()
+    {
+        Debug.LogError("Interacted with the crate!");
         mIsOpen = !mIsOpen;
-        InteractText += mIsOpen ? "to close" : "to open";
+        mAnimator.SetBool("open", mIsOpen);
 
-        GetComponent<Animator>().SetBool("open", mIsOpen);
+        string interactText = mIsOpen ? "Press E to close" : "Press E to open";
+        Debug.Log(interactText); // This would update your UI or HUD
     }
 }
