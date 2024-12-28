@@ -50,7 +50,8 @@ public class LoadingBarController : MonoBehaviour
             // Gradually increases `progress` towards `asyncOperation.progress` over time
             // to slow down the visual filling of the loading bar.
              progress = Mathf.MoveTowards(progress, asyncOperation.progress, loadSpeedFactor * Time.deltaTime);
-
+             // Debug the progress to see what's happening
+              Debug.Log($"Loading progress: {progress}");
             // Sets the loading bar's value to the current `progress` value.
             LoadingBar.value = progress;
 
