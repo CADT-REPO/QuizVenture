@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scenes/GameWinnigScreen.unity.meta
 guid: fb9d7da0d44e5d044bc6e54be8df76d7
+========
+guid: 58ebb64f9c264dd4f9f1e14caeec9b0c
+>>>>>>>> animation_enemy:Assets/RPG Monster DUO PBR Polyart.zip.meta
 DefaultImporter:
   externalObjects: {}
   userData: 

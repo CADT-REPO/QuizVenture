@@ -10,6 +10,9 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
 
     public class MovementController : MonoBehaviour
     {
+        // animation
+        [SerializeField] private Animator m_Animator;
+
         // GUN
         [SerializeField] public Transform cameraTransform;
         [SerializeField] public int rayHittingRange = 20;
@@ -86,6 +89,8 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
         private bool m_IsFloating = false;                          // Player state if is in the air
 
 
+
+
         private float m_MovementVelocity
         {
             get { return new Vector2(m_CharacterController.velocity.x, m_CharacterController.velocity.z).magnitude; }
@@ -131,13 +136,21 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
 
         private void Start()
         {
+            //m_OriginalHeight = m_CharacterController.height;  // Save the original height
+
 
             m_Camera = GetComponentInChildren<Camera>();
             m_AudioSource = GetComponent<AudioSource>();
             m_CharacterController = GetComponent<CharacterController>();
             m_CameraLook = GetComponent<CameraLook>();
 
-            m_CharacterController.height = m_CharacterController.height;
+            m_Animator = GetComponentInChildren<Animator>();
+
+            if (m_Animator == null)
+            {
+                Debug.LogError("Animator component not found! Assign it in the inspector or ensure it exists.");
+            }
+
             m_OriginalScale = transform.localScale;
             m_OriginalLandMomentum = m_LandMomentum;
 
@@ -215,7 +228,10 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
             // Check if the shoot button is pressed
             if (Input_Shoot)
             {
-                GetComponent<Animator>().SetTrigger("Shooting");
+                m_Animator.SetBool("firing", true);
+                //m_Animator.SetBool("IsShooting", true); // Trigger the animation
+
+                //GetComponent<Animator>().SetTrigger("IsShooting");
                 if (Physics.Raycast(forwardRay, out hit, rayHittingRange))
                 {
                     Debug.Log("Hit: " + hit.transform.name);
@@ -225,6 +241,7 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
                     if (enemy != null)
                     {
                         enemy.TakeDamage(1);
+                        enemy.OnBulletHit();
                     }
                     Debug.Log("Destroy called for hitPoint.");
                 }
@@ -235,13 +252,13 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
                 }
                 muzzleFlash.Play();
                 AudioSource.PlayClipAtPoint(gunShotSound, transform.position);
-
                 Input_Shoot = false;
 
             }
-
+            //m_Animator.SetBool("firing", false);
+            //m_Animator.SetBool("IsShooting", false);
         }
-        
+
 
 
 
@@ -271,7 +288,27 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
                 m_MovementDirection.x *= m_LandMomentum / m_OriginalLandMomentum;
                 m_MovementDirection.z *= m_LandMomentum / m_OriginalLandMomentum;
             }
+
+            // Determine if the character is walking
+            bool isWalking = WalkTargetDIrection.magnitude > 0.3f;
+
+            // Update Animator with triggers
+            if (m_Animator != null)
+            {
+                if (isWalking)
+                {
+                    m_Animator.SetTrigger("StartWalking");
+                    Debug.Log("Trigger: StartWalking");
+                }
+                else
+                {
+                    m_Animator.SetTrigger("StopWalking");
+                }
+            }
+            // Detect Forward or Backward Movement
         }
+
+
 
         private void Handle_AirMovement()
         {
@@ -317,6 +354,7 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
 
         }
 
+
         private void Handle_Crouch()
         {
 
@@ -325,6 +363,7 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
             {
 
                 CrouchTransition(m_CrouchHeight, Time.deltaTime);
+                m_Animator.SetBool("crouching", true);
 
             }
 
@@ -333,6 +372,7 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
             {
 
                 CrouchTransition(m_CharacterController.height, -Time.deltaTime);
+                m_Animator.SetBool("crouching", false);
 
             }
 
@@ -359,6 +399,62 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
             }
 
         }
+
+
+        /*
+        private void Handle_Crouch()
+        {
+
+            // Crouching State
+            if (Input_Crouch && !isCrouching )
+            {
+                CrouchTransition(m_CrouchHeight, crouchCenterY, Time.deltaTime);
+                m_Animator.SetBool("crouching", true);
+                Debug.Log("Player is crouching");
+            }
+
+            // Standing State
+            if (!Input_Crouch && isCrouching)
+            {
+                CrouchTransition(m_OriginalHeight, standCenterY, -Time.deltaTime);
+                m_Animator.SetBool("crouching", false);
+                Debug.Log("No crouching");
+            }
+        }
+
+        private void CrouchTransition(float targetHeight, float targetCenterY, float value)
+        {
+            // Smoothly adjust the CharacterController's height and center
+            m_CrouchTimeElapse += value;
+
+            // Clamp the time elapsed to avoid going beyond the crouch transition delay
+            m_CrouchTimeElapse = Mathf.Clamp(m_CrouchTimeElapse, 0, m_CrouchDelay);
+
+            // Update the CharacterController height and center smoothly
+            m_CharacterController.height = Mathf.Lerp(m_CharacterController.height, targetHeight, m_CrouchTimeElapse / m_CrouchDelay);
+            m_CharacterController.center = new Vector3(0, Mathf.Lerp(m_CharacterController.center.y, targetCenterY, m_CrouchTimeElapse / m_CrouchDelay), 0);
+
+            // Update the player's Y position so that the feet stay on the ground
+            if (m_CharacterController.height == m_OriginalHeight || m_CharacterController.height == m_CrouchHeight)
+            {
+                Vector3 currentPosition = transform.position;
+                transform.position = new Vector3(currentPosition.x, m_CharacterController.height / 2, currentPosition.z);
+            }
+
+            // Check if crouch transition is complete
+            if (Mathf.Approximately(m_CharacterController.height, targetHeight))
+            {
+                isCrouching = targetHeight == m_CrouchHeight;
+            }
+        }
+
+        // Helper function to check if the player can crouch (e.g., no obstacle above them)
+        private bool CanCrouch()
+        {
+            Vector3 crouchOrigin = transform.position + Vector3.up * m_CharacterController.height;
+            return !Physics.Raycast(crouchOrigin, Vector3.up, 0.1f);  // Check small distance above the player
+        }
+        */
 
         private void Handle_Step()
         {
