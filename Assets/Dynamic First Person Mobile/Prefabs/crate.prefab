@@ -224,7 +224,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63730fb70c4e04fddaac4f35f792a355, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: 
-  Image: {fileID: 0}
-  InteractText: Press F to pickup the item
-  ItemType: 0
+  openBtn: {fileID: 0}

@@ -5,10 +5,9 @@ using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 using UnityEngine.SceneManagement;
-
 public class QuizManager : MonoBehaviour
 {
-    public GameObject mainScreen;
+    public static QuizManager quizManager;
     public GameObject questionScreen;
     public TextMeshProUGUI questionText;
     public Button[] answerButtons;
@@ -30,10 +29,25 @@ public class QuizManager : MonoBehaviour
     private int seconds;
     private int score = 0;
     private int totalQuestionsAnswered = 0;
+    private List<string> allAnswers;
 
-    public Button targetButton;
-    public RectTransform canvasRect;
 
+
+    void Awake()
+    {
+        if (quizManager == null)
+        {
+            quizManager = this;
+            DontDestroyOnLoad(gameObject);
+            LoadQuestion();
+            Debug.Log("QuizManager initialized.");
+        }
+        else
+        {
+            quizManager = this;
+            Debug.Log("Duplicate QuizManager destroyed.");
+        }
+    }
     void Start()
     {
         isGameRunning = true;
@@ -42,17 +56,9 @@ public class QuizManager : MonoBehaviour
         startButton.onClick.AddListener(OnStartButtonClick);
 
         InvokeRepeating("UpdateGameTimer", 0f, 1f);
-        mainScreen.SetActive(true);
         questionScreen.SetActive(false);
 
-        if (targetButton != null && canvasRect != null)
-        {
-            RandomizeTreasure();
-        }
-        else
-        {
-            Debug.LogError("Button or Canvas not assigned in the Inspector.");
-        }
+
     }
 
     void UpdateGameTimer()
@@ -89,13 +95,12 @@ public class QuizManager : MonoBehaviour
                 OnTimeOut();
             }
         }
-    }
 
+    }
     public void OnStartButtonClick()
     {
-        mainScreen.SetActive(false);
         questionScreen.SetActive(true);
-        LoadQuestion();
+
         StartNewQuestion();
     }
 
@@ -129,8 +134,7 @@ public class QuizManager : MonoBehaviour
         isTimerRunning = true;
         answerSelected = false;
         questionText.text = currentQuestion.question;
-
-        List<string> allAnswers = new List<string>();
+        allAnswers = new List<string>();
 
         if (currentQuestion.answers.correct.Count > 0)
         {
@@ -152,34 +156,40 @@ public class QuizManager : MonoBehaviour
 
         for (int i = 0; i < answerButtons.Length; i++)
         {
-            if (i < allAnswers.Count)
-            {
-                answerButtons[i].gameObject.SetActive(true);
-                answerButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = allAnswers[i];
+            answerButtons[i].gameObject.SetActive(true);
+            answerButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = allAnswers[i];
 
-                string answer = allAnswers[i];
-                answerButtons[i].onClick.RemoveAllListeners();
-                answerButtons[i].onClick.AddListener(() => OnAnswerSelected(i, answer));
-            }
-            else
-            {
-                answerButtons[i].gameObject.SetActive(false);
-            }
+            string answer = allAnswers[i];
+            print("Answer: " + answer);
+            answerButtons[i].onClick.RemoveAllListeners();
+            answerButtons[i].onClick.AddListener(() => OnAnswerSelected(answer));
+
+
         }
+        Debug.Log("Question loaded: " + allAnswers);
     }
 
-    public void OnAnswerSelected(int buttonIndex, string selectedAnswer)
+
+    public void OnAnswerSelected(string selectedAnswer)
     {
         if (answerSelected) return; // Prevent multiple clicks
 
-        answerSelected = true; // Mark answer as selected
+        answerSelected = true; // Mark answer as selected    
+        // Debug.Log("Button Clicked: " + answerButtons[buttonIndex].name);
+        // print("Button Index: " + buttonIndex);
+        // string selectedAnswer = answerButtons[buttonIndex].GetComponentInChildren<TextMeshProUGUI>().text;
 
-        if (currentQuestion.answers.correct.Contains(selectedAnswer))
+        // Debug logs to verify selected answer and correct answers
+        Debug.Log("Selected Answer: " + selectedAnswer);
+        Debug.Log("Correct Answers: " + string.Join(", ", currentQuestion.answers.correct));
+
+        // Check if the selected answer is one of the correct answers
+        if (currentQuestion.answers.correct.Exists(answer => answer == selectedAnswer))
         {
             score++;
             correctCount.text = score.ToString();
             gameTime += 10f;
-            Debug.Log("Correct Answer! +10s added.");
+            Debug.Log("Correct Answer! +10s added. New Score: " + score);
             if (gameTime > 120f) gameTime = 120f;
             totalQuestionsAnswered++;
 
@@ -198,15 +208,12 @@ public class QuizManager : MonoBehaviour
                 SceneManager.LoadScene("GameOverScreen");
             }
         }
-
+        // answerSelected = true;
         questionScreen.SetActive(false);
-        mainScreen.SetActive(true);
-        RandomizeTreasure();
     }
 
     void OnTimeOut()
     {
-        mainScreen.SetActive(true);
         questionScreen.SetActive(false);
     }
 
@@ -224,16 +231,16 @@ public class QuizManager : MonoBehaviour
     void endGame()
     {
         Debug.Log("Game Over");
-        mainScreen.SetActive(true);
+        SceneManager.LoadScene("GameOverScreen");
+    }
+    private void UpdateScore()
+    {
+        correctCount.text = score.ToString();
+        if (score == 10)
+        {
+            Debug.Log("You Win!");
+            SceneManager.LoadScene("GameWinningScreen");
+        }
     }
 
-    void RandomizeTreasure()
-    {
-        RectTransform buttonRect = targetButton.GetComponent<RectTransform>();
-        float canvasWidth = canvasRect.rect.width;
-        float canvasHeight = canvasRect.rect.height;
-        float randomX = Random.Range(-canvasWidth / 2 + buttonRect.rect.width / 2, canvasWidth / 2 - buttonRect.rect.width / 2);
-        float randomY = Random.Range(-canvasHeight / 2 + buttonRect.rect.height / 2, canvasHeight / 2 - buttonRect.rect.height / 2);
-        buttonRect.anchoredPosition = new Vector2(randomX, randomY);
-    }
 }

@@ -682,7 +682,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Option_1
+  m_Name: Option_4
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: Normal
@@ -745,10 +745,10 @@ AnimatorStateMachine:
     m_Position: {x: 280, y: 20, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -167511988994733182}
-    m_Position: {x: 430, y: 80, z: 0}
+    m_Position: {x: 310, y: 100, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -4023105670258092889}
-    m_Position: {x: 420, y: 180, z: 0}
+    m_Position: {x: 305, y: 195, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5510948520048531636}
     m_Position: {x: 340, y: 260, z: 0}

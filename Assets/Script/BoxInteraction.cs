@@ -18,6 +18,7 @@ public class BoxInteraction : MonoBehaviour
         if (player == null)
         {
             Debug.LogError("Player not found in the scene. Ensure the player prefab is instantiated and tagged correctly.");
+            return;
         }
 
         // Create an interaction button dynamically if the prefab is assigned
@@ -58,20 +59,18 @@ public class BoxInteraction : MonoBehaviour
         }
     }
 
-    void UpdateButtonPosition()
-    {
-        if (interactionButton != null)
-        {
-            Vector3 screenPosition = Camera.main.WorldToScreenPoint(transform.position);
-            interactionButton.transform.position = screenPosition + new Vector3(0, 50, 0); // Offset to position above the box
-        }
-    }
-
     public void OnInteract()
     {
         // Define what happens when the button is clicked
         Debug.Log("Interacted with the box!");
         interactionButton.SetActive(false); // Hide the button after interaction
+    }
+
+    private void UpdateButtonPosition()
+    {
+        // Position the button near the object in the UI
+        Vector3 screenPosition = Camera.main.WorldToScreenPoint(transform.position);
+        interactionButton.transform.position = screenPosition;
     }
 
     private void OnDestroy()

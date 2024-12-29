@@ -41,7 +41,7 @@ public class EnemyScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("Enemy spawned: " + gameObject.name);  // This should print for each instance
+        // Debug.Log("Enemy spawned: " + gameObject.name);  // This should print for each instance
         m_playerPosition = Vector3.zero;
         //m_playerNear = true;
         m_isPatrol = true;
@@ -63,7 +63,7 @@ public class EnemyScript : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Invalid waypoint index: " + m_currentWayPointIndex);
+            // Debug.LogError("Invalid waypoint index: " + m_currentWayPointIndex);
         }
 
     }
@@ -71,7 +71,7 @@ public class EnemyScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("Enemy active: " + gameObject.activeSelf);  // Log if the object is still active
+        // Debug.Log("Enemy active: " + gameObject.activeSelf);  // Log if the object is still active
 
         environemntView();
         if (!m_isPatrol)
@@ -140,14 +140,14 @@ public class EnemyScript : MonoBehaviour
 
     void environemntView()
     {
-        print("Checking player visibility...");
+        // print("Checking player visibility...");
 
         Collider[] playerRange = Physics.OverlapSphere(transform.position, viewRadius, playerMask);
         bool playerDetected = false;  // Flag to track if player is detected
 
         for (int i = 0; i < playerRange.Length; i++)
         {
-            print("Checking...");
+            // print("Checking...");
             Transform player = playerRange[i].transform;
             Vector3 dirToPlayer = (player.position - transform.position).normalized;
             if (Vector3.Angle(transform.forward, dirToPlayer) < viewAngle / 2)
@@ -159,14 +159,14 @@ public class EnemyScript : MonoBehaviour
                     m_playerInRange = true;
                     playerDetected = true;
                     m_isPatrol = false;
-                    print("player is within the enemy's detection radius");
+                    // print("player is within the enemy's detection radius");
                     break; // Player detected, exit the loop
 
                 }
                 else
                 {
                     m_playerInRange = false;
-                    print("not within the radius");
+                    // print("not within the radius");
                 }
 
             }
@@ -184,7 +184,7 @@ public class EnemyScript : MonoBehaviour
 
         if (!m_playerInRange)
         {
-            print("Player not detected.");
+            // print("Player not detected.");
         }
 
     }
