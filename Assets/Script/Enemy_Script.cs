@@ -8,6 +8,7 @@ public class Enemy_Script : MonoBehaviour
 {
 
     public NavMeshAgent agent;
+    public Animator animator;
     public float startWaitTime = 4;
     public float timeToRotate = 2;
     public float speedWalk = 6;
@@ -51,6 +52,7 @@ public class Enemy_Script : MonoBehaviour
         player = GameObject.FindWithTag("Player").transform;
         m_currentWayPointIndex = 0;
         agent = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
 
         agent.isStopped = false;
         agent.speed = speedWalk;
@@ -70,14 +72,23 @@ public class Enemy_Script : MonoBehaviour
     void Update()
     {
         environemntView();
-        if(!m_isPatrol)
+        if (!m_isPatrol)
         {
             Chasing();
-        }else
+        }
+        else
         {
             Patrolling();
         }
-        
+
+    }
+
+    public void PlayHitTransition()
+    {
+        if ( animator != null )
+        {
+            animator.SetTrigger("Hit");
+        }
     }
 
     void CaughtPlayer()
@@ -88,9 +99,9 @@ public class Enemy_Script : MonoBehaviour
     void lookingPlayer(Vector3 player)
     {
         agent.SetDestination(player);
-        if(Vector3.Distance(transform.position, player) <= 0.3)
+        if (Vector3.Distance(transform.position, player) <= 0.3)
         {
-            if(m_WaitTime <= 0)
+            if (m_WaitTime <= 0)
             {
                 m_playerNear = false;
                 Move(speedWalk);
@@ -119,7 +130,7 @@ public class Enemy_Script : MonoBehaviour
         agent.speed = 0;
     }
 
-    public void nextPoint () 
+    public void nextPoint()
     {
         m_currentWayPointIndex = (m_currentWayPointIndex + 1) % wayPoints.Length;
         agent.SetDestination(wayPoints[m_currentWayPointIndex].position);
@@ -137,11 +148,11 @@ public class Enemy_Script : MonoBehaviour
             print("Checking...");
             Transform player = playerRange[i].transform;
             Vector3 dirToPlayer = (player.position - transform.position).normalized;
-            if(Vector3.Angle(transform.forward, dirToPlayer) < viewAngle/2)
+            if (Vector3.Angle(transform.forward, dirToPlayer) < viewAngle / 2)
             {
                 // checks if the player is within the enemy's detection radius
                 float dstToPlayer = Vector3.Distance(transform.position, player.position);
-                if(Physics.Raycast(transform.position, dirToPlayer, dstToPlayer, obstacleMask)) 
+                if (Physics.Raycast(transform.position, dirToPlayer, dstToPlayer, obstacleMask))
                 {
                     m_playerInRange = true;
                     playerDetected = true;
@@ -157,7 +168,7 @@ public class Enemy_Script : MonoBehaviour
                 }
 
             }
-            if(Vector3.Distance(transform.forward, player.position) > viewRadius)
+            if (Vector3.Distance(transform.forward, player.position) > viewRadius)
             {
                 m_playerInRange = false;
             }
@@ -176,17 +187,17 @@ public class Enemy_Script : MonoBehaviour
 
     }
 
-    private void Patrolling ()
+    private void Patrolling()
     {
-        if(m_playerNear)
+        if (m_playerNear)
         {
-            if(m_TimeToRotate <= 0)
+            if (m_TimeToRotate <= 0)
             {
                 Move(speedWalk);
                 lookingPlayer(playerLastPosition);
             }
-            else 
-            { 
+            else
+            {
                 Stop();
                 m_TimeToRotate -= Time.deltaTime;
             }
@@ -196,9 +207,9 @@ public class Enemy_Script : MonoBehaviour
             m_playerNear = false;
             playerLastPosition = Vector3.zero;
             agent.SetDestination(wayPoints[m_currentWayPointIndex].position);
-            if(agent.remainingDistance <= agent.stoppingDistance)
+            if (agent.remainingDistance <= agent.stoppingDistance)
             {
-                if(m_WaitTime <= 0f)
+                if (m_WaitTime <= 0f)
                 {
                     nextPoint();
                     Move(speedWalk);
@@ -212,21 +223,21 @@ public class Enemy_Script : MonoBehaviour
                 }
             }
         }
-    } 
+    }
 
-    private void Chasing ()
+    private void Chasing()
     {
         m_playerNear = true;
-        playerLastPosition = Vector3.zero ;
-        if(!m_caughtPlayer)
+        playerLastPosition = Vector3.zero;
+        if (!m_caughtPlayer)
         {
             Move(speedRun);
             agent.SetDestination(m_playerPosition);
         }
 
-        if(agent.remainingDistance <= agent.stoppingDistance)
+        if (agent.remainingDistance <= agent.stoppingDistance)
         {
-            if(m_WaitTime <= 0 && !m_caughtPlayer && Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Player").transform.position) >= 6f)
+            if (m_WaitTime <= 0 && !m_caughtPlayer && Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Player").transform.position) >= 6f)
             {
                 m_isPatrol = false;
                 m_playerNear = false;
@@ -238,10 +249,10 @@ public class Enemy_Script : MonoBehaviour
             }
             else
             {
-                if(Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Player").transform.position) >=2.5f)
+                if (Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Player").transform.position) >= 2.5f)
                 {
                     Stop();
-                    m_WaitTime -= Time.deltaTime ;
+                    m_WaitTime -= Time.deltaTime;
 
 
                 }
