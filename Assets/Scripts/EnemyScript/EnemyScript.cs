@@ -7,6 +7,7 @@ using UnityEngine.AI;
 public class EnemyScript : MonoBehaviour
 {
 
+    private QuizManager quizManager;
     public NavMeshAgent agent;
     public Animator animator;
     public float startWaitTime = 4;
@@ -43,6 +44,7 @@ public class EnemyScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        quizManager = GameObject.FindObjectOfType<QuizManager>();
         // Debug.Log("Enemy spawned: " + gameObject.name);  // This should print for each instance
         m_playerPosition = Vector3.zero;
         //m_playerNear = true;
@@ -85,7 +87,7 @@ public class EnemyScript : MonoBehaviour
     public void OnBulletHit()
     {
         hitCount++;
-        if (hitCount == 1) 
+        if (hitCount == 1)
         {
             // idle attack mode
             Debug.Log("Playing Hit Transition Animation");
@@ -125,7 +127,7 @@ public class EnemyScript : MonoBehaviour
             //animator.SetTrigger("Die");
             Die();
             //Destroy(this.gameObject);
-        } 
+        }
         else if (Health <= 2)
         {
             Debug.Log("Enemy stunned");
@@ -158,6 +160,7 @@ public class EnemyScript : MonoBehaviour
     void CaughtPlayer()
     {
         m_caughtPlayer |= true;
+
     }
 
     void lookingPlayer(Vector3 player)
@@ -318,6 +321,11 @@ public class EnemyScript : MonoBehaviour
                 {
                     Stop();
                     m_WaitTime -= Time.deltaTime;
+                    if (quizManager != null)
+                    {
+                        quizManager.gameTime -= Time.deltaTime;
+                        Debug.Log("Game time reduced: " + quizManager.gameTime);
+                    }
 
 
                 }

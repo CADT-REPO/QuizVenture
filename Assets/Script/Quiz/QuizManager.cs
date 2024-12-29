@@ -20,7 +20,7 @@ public class QuizManager : MonoBehaviour
     private bool isTimerRunning = false;
     private bool answerSelected = false; // Track if an answer has been selected
 
-    private float gameTime = 120f;
+    public float gameTime = 120f;
     private bool isGameRunning = false;
     public TextMeshProUGUI gameTimerText;
     public Button startButton;
@@ -67,20 +67,20 @@ public class QuizManager : MonoBehaviour
     {
         if (isGameRunning)
         {
-            print("isTimeRunning: " + isTimerRunning);
+            // print("isTimeRunning: " + isTimerRunning);
             if (isTimerRunning && !answerSelected)
             {
                 timeRemaining -= Time.deltaTime;
                 timerText.text = Mathf.Ceil(timeRemaining).ToString();
                 // timerText.text = "test";
-                Debug.Log("Time Remaining: " + timeRemaining);
+                // Debug.Log("Time Remaining: " + timeRemaining);
                 if (timeRemaining <= 0)
                 {
                     isTimerRunning = false;
                     
                     timerText.text = "0";
                     OnTimeOut();
-                    timeRemaining = timeLimit;
+                    // timeRemaining = timeLimit;
                 }
             }
         }

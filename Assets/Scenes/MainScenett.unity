@@ -3198,6 +3198,7 @@ Transform:
   - {fileID: 333149450}
   - {fileID: 894822543}
   - {fileID: 1173374661}
+  - {fileID: 281434873}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &342010441 stripped
@@ -15236,8 +15237,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mouseSensitivity: 100
   playerBody: {fileID: 0}
-  mouseSensitivity: 100
-  playerBody: {fileID: 0}
 --- !u!1001 &1590409431
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16332,6 +16331,7 @@ MonoBehaviour:
   - {fileID: 717299731}
   timerText: {fileID: 801459093}
   timeLimit: 10
+  gameTime: 120
   gameTimerText: {fileID: 1438786913}
   startButton: {fileID: 218407894}
   correctCount: {fileID: 2129697613}
@@ -16581,7 +16581,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1928704067}
+    m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 6598955983150435655, guid: e21fa9764e2ccb5419240cabd00065c2, type: 3}
       propertyPath: startWaitTime
@@ -16901,7 +16901,7 @@ PrefabInstance:
     - target: {fileID: 68700528130465695, guid: 75e1724d6739d834da0c7d8b4aa2deff, type: 3}
       propertyPath: m_OnClicked.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1333406321}
+      objectReference: {fileID: 0}
     - target: {fileID: 68700528130465695, guid: 75e1724d6739d834da0c7d8b4aa2deff, type: 3}
       propertyPath: m_OnAfterClicked.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 6
@@ -16921,11 +16921,11 @@ PrefabInstance:
     - target: {fileID: 68700528130465695, guid: 75e1724d6739d834da0c7d8b4aa2deff, type: 3}
       propertyPath: m_OnAfterClicked.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1333406321}
+      objectReference: {fileID: 0}
     - target: {fileID: 68700528130465695, guid: 75e1724d6739d834da0c7d8b4aa2deff, type: 3}
       propertyPath: m_OnButtonReleased.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1333406321}
+      objectReference: {fileID: 0}
     - target: {fileID: 68700528130465695, guid: 75e1724d6739d834da0c7d8b4aa2deff, type: 3}
       propertyPath: m_OnAfterClicked.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
@@ -17497,7 +17497,7 @@ PrefabInstance:
     - target: {fileID: 7299611159695981407, guid: 75e1724d6739d834da0c7d8b4aa2deff, type: 3}
       propertyPath: hitEffect
       value: 
-      objectReference: {fileID: 233615136}
+      objectReference: {fileID: 0}
     - target: {fileID: 7299611159695981407, guid: 75e1724d6739d834da0c7d8b4aa2deff, type: 3}
       propertyPath: bulletPool
       value: 
@@ -17509,7 +17509,7 @@ PrefabInstance:
     - target: {fileID: 7299611159695981407, guid: 75e1724d6739d834da0c7d8b4aa2deff, type: 3}
       propertyPath: cameraTransform
       value: 
-      objectReference: {fileID: 1718424749}
+      objectReference: {fileID: 0}
     - target: {fileID: 7299611159695981407, guid: 75e1724d6739d834da0c7d8b4aa2deff, type: 3}
       propertyPath: m_WalkBob.BobRange.x
       value: 0.2
@@ -21725,6 +21725,10 @@ PrefabInstance:
       value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 5377111668244849110, guid: 94951e9dddd234c4fa9f749553fa936d, type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 3148848347156448688}
+    - target: {fileID: 5377111668244849110, guid: 94951e9dddd234c4fa9f749553fa936d, type: 3}
       propertyPath: wayPoints.Array.data[1]
       value: 
       objectReference: {fileID: 262530313}
@@ -21793,6 +21797,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 94951e9dddd234c4fa9f749553fa936d, type: 3}
+--- !u!95 &3148848347156448688 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 6054768846261253995, guid: 94951e9dddd234c4fa9f749553fa936d, type: 3}
+  m_PrefabInstance: {fileID: 3148848347156448687}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4800832072976845628
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21982,3 +21991,5 @@ SceneRoots:
   - {fileID: 1723102988}
   - {fileID: 1760371176}
   - {fileID: 696375051}
+  - {fileID: 1787388933}
+  - {fileID: 1758159021}

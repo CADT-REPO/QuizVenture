@@ -149,6 +149,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5069125559618048176, guid: 3d071e6f629bea7459298e0f16ec6af4, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 7e8febb802f5bb041a630f58bc6437cc, type: 2}
     - target: {fileID: 6908340741015457859, guid: 3d071e6f629bea7459298e0f16ec6af4, type: 3}
       propertyPath: m_CullingMask.m_Bits
       value: 55
@@ -230,7 +234,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 152864997609609959, guid: 5e09c941eb019ac43abed1294771a224, type: 3}
       propertyPath: m_Value
-      value: 0.000000056318676
+      value: -0.00000016895603
       objectReference: {fileID: 0}
     - target: {fileID: 445983302404815206, guid: 5e09c941eb019ac43abed1294771a224, type: 3}
       propertyPath: m_Maskable
@@ -462,7 +466,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5595916829677865861, guid: 5e09c941eb019ac43abed1294771a224, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 17.409601
+      value: 17.409645
       objectReference: {fileID: 0}
     - target: {fileID: 5850050813911530455, guid: 5e09c941eb019ac43abed1294771a224, type: 3}
       propertyPath: m_Maskable
