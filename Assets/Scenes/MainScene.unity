@@ -2143,7 +2143,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: 827f14c8869a2de48adbb0e93d02c68d, type: 2}
+  m_NavMeshData: {fileID: 0}
   m_BuildHeightMesh: 0
 --- !u!4 &203561332 stripped
 Transform:
@@ -2879,10 +2879,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   treasureBoxPrefab: {fileID: 2367029993599221461, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
-  spawnAreaMin: {x: 0, y: 0, z: 0}
-  spawnAreaMax: {x: 0, y: 0, z: 0}
-  fixedYPosition: 0
   numberOfBoxes: 5
+  yOffset: 0.5
 --- !u!1 &292818316
 GameObject:
   m_ObjectHideFlags: 0
@@ -16431,7 +16429,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbd00d36840c0b9299f50d4ee202dc0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainScreen: {fileID: 1101559964}
   questionScreen: {fileID: 2102184524}
   questionText: {fileID: 1878688393}
   answerButtons:
@@ -16444,8 +16441,6 @@ MonoBehaviour:
   gameTimerText: {fileID: 1438786913}
   startButton: {fileID: 218407894}
   correctCount: {fileID: 2129697613}
-  targetButton: {fileID: 218407894}
-  canvasRect: {fileID: 1101559965}
 --- !u!1001 &1726771673
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21116,7 +21111,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: 822cf874ea178fc4f892528d40815bdb, type: 2}
+  m_NavMeshData: {fileID: 0}
   m_BuildHeightMesh: 0
 --- !u!4 &2123626898
 Transform:
