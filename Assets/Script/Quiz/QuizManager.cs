@@ -16,8 +16,8 @@ public class QuizManager : MonoBehaviour
 
     private List<Question> allQuestions = new List<Question>();
     private Question currentQuestion;
-    private float timeRemaining;
-    private bool isTimerRunning = true;
+    private float timeRemaining = 10f;
+    private bool isTimerRunning = false;
     private bool answerSelected = false; // Track if an answer has been selected
 
     private float gameTime = 120f;
@@ -32,22 +32,6 @@ public class QuizManager : MonoBehaviour
     private List<string> allAnswers;
 
 
-
-    void Awake()
-    {
-        if (quizManager == null)
-        {
-            quizManager = this;
-            DontDestroyOnLoad(gameObject);
-            LoadQuestion();
-            Debug.Log("QuizManager initialized.");
-        }
-        else
-        {
-            quizManager = this;
-            Debug.Log("Duplicate QuizManager destroyed.");
-        }
-    }
     void Start()
     {
         isGameRunning = true;
@@ -57,8 +41,6 @@ public class QuizManager : MonoBehaviour
 
         InvokeRepeating("UpdateGameTimer", 0f, 1f);
         questionScreen.SetActive(false);
-
-
     }
 
     void UpdateGameTimer()
@@ -83,24 +65,33 @@ public class QuizManager : MonoBehaviour
 
     void Update()
     {
-        if (isTimerRunning && !answerSelected)
+        if (isGameRunning)
         {
-            timeRemaining -= Time.deltaTime;
-            timerText.text = Mathf.Ceil(timeRemaining).ToString();
-
-            if (timeRemaining <= 0)
+            print("isTimeRunning: " + isTimerRunning);
+            if (isTimerRunning && !answerSelected)
             {
-                isTimerRunning = false;
-                timerText.text = "0";
-                OnTimeOut();
+                timeRemaining -= Time.deltaTime;
+                timerText.text = Mathf.Ceil(timeRemaining).ToString();
+                // timerText.text = "test";
+                Debug.Log("Time Remaining: " + timeRemaining);
+                if (timeRemaining <= 0)
+                {
+                    isTimerRunning = false;
+                    
+                    timerText.text = "0";
+                    OnTimeOut();
+                    timeRemaining = timeLimit;
+                }
             }
         }
-
     }
+
     public void OnStartButtonClick()
     {
         questionScreen.SetActive(true);
-
+        isTimerRunning = true;
+        answerSelected = false;
+        LoadQuestion();
         StartNewQuestion();
     }
 
@@ -125,14 +116,15 @@ public class QuizManager : MonoBehaviour
             Debug.LogError("No question available to display");
             return;
         }
-
+        timeRemaining = timeLimit; // Ensure timeRemaining is set to timeLimit
+        Debug.Log("New Question Started. Time Remaining: " + timeRemaining);
+        // isTimerRunning = true;
+        // answerSelected = false;
         int randomIndex = Random.Range(0, allQuestions.Count);
         currentQuestion = allQuestions[randomIndex];
         allQuestions.RemoveAt(randomIndex);
 
-        timeRemaining = timeLimit;
-        isTimerRunning = true;
-        answerSelected = false;
+        
         questionText.text = currentQuestion.question;
         allAnswers = new List<string>();
 
@@ -160,25 +152,22 @@ public class QuizManager : MonoBehaviour
             answerButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = allAnswers[i];
 
             string answer = allAnswers[i];
-            print("Answer: " + answer);
+            Debug.Log("Answer: " + answer);
             answerButtons[i].onClick.RemoveAllListeners();
             answerButtons[i].onClick.AddListener(() => OnAnswerSelected(answer));
-
-
         }
         Debug.Log("Question loaded: " + allAnswers);
     }
-
 
     public void OnAnswerSelected(string selectedAnswer)
     {
         if (answerSelected) return; // Prevent multiple clicks
 
         answerSelected = true; // Mark answer as selected    
-        // Debug.Log("Button Clicked: " + answerButtons[buttonIndex].name);
-        // print("Button Index: " + buttonIndex);
-        // string selectedAnswer = answerButtons[buttonIndex].GetComponentInChildren<TextMeshProUGUI>().text;
-
+                               // Debug.Log("Button Clicked: " + answerButtons[buttonIndex].name);
+                               // Debug.Log("Button Index: " + buttonIndex);
+                               // string selectedAnswer = answerButtons[buttonIndex].GetComponentInChildren<TextMeshProUGUI>().text;
+        isTimerRunning = false; // Stop the timer
         // Debug logs to verify selected answer and correct answers
         Debug.Log("Selected Answer: " + selectedAnswer);
         Debug.Log("Correct Answers: " + string.Join(", ", currentQuestion.answers.correct));
@@ -233,6 +222,7 @@ public class QuizManager : MonoBehaviour
         Debug.Log("Game Over");
         SceneManager.LoadScene("GameOverScreen");
     }
+
     private void UpdateScore()
     {
         correctCount.text = score.ToString();
@@ -242,5 +232,4 @@ public class QuizManager : MonoBehaviour
             SceneManager.LoadScene("GameWinningScreen");
         }
     }
-
 }

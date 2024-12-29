@@ -14,11 +14,11 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/MainScence.unity
     guid: a5b9e7a9308ec6e4c9c5d57a88f82b61
+  - enabled: 0
+    path: Assets/Scenes/MainScenett.unity
+    guid: a47ef6c481a0e0b4e8cb0c2f731cd3a0
   - enabled: 1
     path: Assets/Scenes/MainScene.unity
-    guid: a47ef6c481a0e0b4e8cb0c2f731cd3a0
-  - enabled: 0
-    path: Assets/Scenes/MainScene 2.unity
     guid: 5967a213478fb43e8a684a185744ee81
   - enabled: 1
     path: Assets/Scenes/GameOverScreen.unity
