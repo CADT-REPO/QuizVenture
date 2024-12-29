@@ -67,13 +67,13 @@ public class QuizManager : MonoBehaviour
     {
         if (isGameRunning)
         {
-            print("isTimeRunning: " + isTimerRunning);
+            // print("isTimeRunning: " + isTimerRunning);
             if (isTimerRunning && !answerSelected)
             {
                 timeRemaining -= Time.deltaTime;
                 timerText.text = Mathf.Ceil(timeRemaining).ToString();
                 // timerText.text = "test";
-                Debug.Log("Time Remaining: " + timeRemaining);
+                // Debug.Log("Time Remaining: " + timeRemaining);
                 if (timeRemaining <= 0)
                 {
                     isTimerRunning = false;
