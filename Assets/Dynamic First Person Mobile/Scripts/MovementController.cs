@@ -11,7 +11,7 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
     public class MovementController : MonoBehaviour
     {
         // animation
-        [SerializeField] private Animator m_Animator;
+        // [SerializeField] private Animator m_Animator;
 
         // GUN
         [SerializeField] public Transform cameraTransform;
@@ -140,12 +140,13 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
             m_CharacterController = GetComponent<CharacterController>();
             m_CameraLook = GetComponent<CameraLook>();
 
-            m_Animator = GetComponentInChildren<Animator>();
+            // m_Animator = GetComponentInChildren<Animator>();
 
-            if (m_Animator == null)
-            {
-                Debug.LogError("Animator component not found! Assign it in the inspector or ensure it exists.");
-            }
+
+            // if (m_Animator == null)
+            // {
+            //     Debug.LogError("Animator component not found! Assign it in the inspector or ensure it exists.");
+            // }
 
             m_OriginalScale = transform.localScale;
             m_OriginalLandMomentum = m_LandMomentum;
@@ -179,7 +180,7 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
             // Check if the shoot button is pressed
             if (Input_Shoot)
             {
-                m_Animator.SetBool("firing", true);
+                // m_Animator.SetBool("firing", true);
                 //m_Animator.SetBool("IsShooting", true); // Trigger the animation
 
                 //GetComponent<Animator>().SetTrigger("IsShooting");
@@ -244,18 +245,18 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
             bool isWalking = WalkTargetDIrection.magnitude > 0.3f;
 
             // Update Animator with triggers
-            if (m_Animator != null)
-            {
-                if (isWalking)
-                {
-                    m_Animator.SetTrigger("StartWalking");
-                    Debug.Log("Trigger: StartWalking");
-                }
-                else
-                {
-                    m_Animator.SetTrigger("StopWalking");
-                }
-            }
+            // if (m_Animator != null)
+            // {
+            //     if (isWalking)
+            //     {
+            //         m_Animator.SetTrigger("StartWalking");
+            //         Debug.Log("Trigger: StartWalking");
+            //     }
+            //     else
+            //     {
+            //         m_Animator.SetTrigger("StopWalking");
+            //     }
+            // }
             // Detect Forward or Backward Movement
         }
 
@@ -314,7 +315,7 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
             {
 
                 CrouchTransition(m_CrouchHeight, Time.deltaTime);
-                m_Animator.SetBool("crouching", true);
+                // m_Animator.SetBool("crouching", true);
 
             }
 
@@ -323,7 +324,7 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
             {
 
                 CrouchTransition(m_CharacterController.height, -Time.deltaTime);
-                m_Animator.SetBool("crouching", false);
+                // m_Animator.SetBool("crouching", false);
 
             }
 

@@ -14,7 +14,7 @@ public class MovementControllerEditor : Editor {
         MovementController movementController = (MovementController)target;
         EditorGUILayout.Space(10f);
 
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("m_Animator"));
+        // EditorGUILayout.PropertyField(serializedObject.FindProperty("m_Animator"));
 
 
         EditorGUILayout.LabelField("Input Settings", EditorStyles.boldLabel);
