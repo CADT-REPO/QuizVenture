@@ -8,7 +8,6 @@ using UnityEngine.SceneManagement;
 
 public class QuizManager : MonoBehaviour, IPausable
 {
-    public static QuizManager quizManager;
     public GameObject questionScreen;
     public TextMeshProUGUI questionText;
     public Button[] answerButtons;
@@ -18,7 +17,7 @@ public class QuizManager : MonoBehaviour, IPausable
     private List<Question> allQuestions = new List<Question>();
     private Question currentQuestion;
     private float timeRemaining = 10f;
-    private bool isTimerRunning;
+    private bool isTimerRunning = false;
     private bool answerSelected = false; // Track if an answer has been selected
 
     public float gameTime = 120f;
@@ -45,18 +44,15 @@ public class QuizManager : MonoBehaviour, IPausable
     public void ManualUpdate()
     {
         // Implement the update logic that should run even when the game is paused
-        if (isGameRunning)
+        if (isTimerRunning && !answerSelected)
         {
-            if (isTimerRunning && !answerSelected)
+            timeRemaining -= Time.unscaledDeltaTime;
+            timerText.text = Mathf.Ceil(timeRemaining).ToString();
+            if (timeRemaining <= 0)
             {
-                timeRemaining -= Time.unscaledDeltaTime;
-                timerText.text = Mathf.Ceil(timeRemaining).ToString();
-                if (timeRemaining <= 0)
-                {
-                    isTimerRunning = false;
-                    timerText.text = "0";
-                    OnTimeOut();
-                }
+                isTimerRunning = false;
+                timerText.text = "0";
+                OnTimeOut();
             }
         }
     }
@@ -94,21 +90,15 @@ public class QuizManager : MonoBehaviour, IPausable
 
     void Update()
     {
-        if (Time.timeScale != 0)
+        if (isTimerRunning && !answerSelected)
         {
-            if (isGameRunning)
+            timeRemaining -= Time.unscaledDeltaTime;
+            timerText.text = Mathf.Ceil(timeRemaining).ToString();
+            if (timeRemaining <= 0)
             {
-                if (isTimerRunning && !answerSelected)
-                {
-                    timeRemaining -= Time.deltaTime;
-                    timerText.text = Mathf.Ceil(timeRemaining).ToString();
-                    if (timeRemaining <= 0)
-                    {
-                        isTimerRunning = false;
-                        timerText.text = "0";
-                        OnTimeOut();
-                    }
-                }
+                isTimerRunning = false;
+                timerText.text = "0";
+                OnTimeOut();
             }
         }
     }
@@ -142,15 +132,17 @@ public class QuizManager : MonoBehaviour, IPausable
             Debug.LogError("No question available to display");
             return;
         }
-        timeRemaining = timeLimit; // Ensure timeRemaining is set to timeLimit
-        Debug.Log("New Question Started. Time Remaining: " + timeRemaining);
-        isTimerRunning = true;
-        answerSelected = false;
+
         int randomIndex = Random.Range(0, allQuestions.Count);
         currentQuestion = allQuestions[randomIndex];
         allQuestions.RemoveAt(randomIndex);
 
+        timeRemaining = timeLimit; // Ensure timeRemaining is set to timeLimit
+        isTimerRunning = true;
+        answerSelected = false;
+
         questionText.text = currentQuestion.question;
+
         allAnswers = new List<string>();
 
         if (currentQuestion.answers.correct.Count > 0)
@@ -193,14 +185,12 @@ public class QuizManager : MonoBehaviour, IPausable
         Debug.Log("Selected Answer: " + selectedAnswer);
         Debug.Log("Correct Answers: " + string.Join(", ", currentQuestion.answers.correct));
 
-        
         if (currentQuestion.answers.correct.Exists(answer => answer == selectedAnswer))
         {
             score++;
             correctCount.text = score.ToString();
             gameTime += 10f;
             Debug.Log("Correct Answer! +10s added. New Score: " + score);
-            // if (gameTime > 120f) gameTime = 120f;
             totalQuestionsAnswered++;
 
             if (totalQuestionsAnswered == 10 && gameTime > 0)
@@ -224,6 +214,8 @@ public class QuizManager : MonoBehaviour, IPausable
 
     void OnTimeOut()
     {
+        isTimerRunning = false;
+        answerSelected = true;
         questionScreen.SetActive(false);
         StateController.ResumeGame(); // Resume the game if time runs out
     }
@@ -241,6 +233,8 @@ public class QuizManager : MonoBehaviour, IPausable
 
     void endGame()
     {
+        isTimerRunning = false;
+        answerSelected = true;
         Debug.Log("Game Over");
         SceneManager.LoadScene("GameOverScreen");
     }

@@ -8,11 +8,13 @@ public class StateController : MonoBehaviour
     static public void PauseGame()
     {
         Time.timeScale = 0;
+        Debug.Log("Game Paused");
     }
 
     static public void ResumeGame()
     {
         Time.timeScale = 1;
+        Debug.Log("Game Resumed");
     }
 
     public static void RegisterPausable(IPausable pausable)
@@ -38,6 +40,7 @@ public class StateController : MonoBehaviour
             foreach (var pausable in pausableObjects)
             {
                 pausable.ManualUpdate();
+                Debug.Log("ManualUpdate called for: " + pausable);
             }
         }
     }
