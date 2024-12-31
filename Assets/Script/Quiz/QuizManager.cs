@@ -24,12 +24,14 @@ public class QuizManager : MonoBehaviour, IPausable
     private bool isGameRunning = false;
     public TextMeshProUGUI gameTimerText;
     public Button startButton;
+    // public Canvas startButtonCanvas;
     public TextMeshProUGUI correctCount;
     private int minutes;
     private int seconds;
     private int score = 0;
     private int totalQuestionsAnswered = 0;
     private List<string> allAnswers;
+    
 
     void OnEnable()
     {
@@ -56,6 +58,7 @@ public class QuizManager : MonoBehaviour, IPausable
             }
         }
     }
+  
 
     void Start()
     {
@@ -105,6 +108,7 @@ public class QuizManager : MonoBehaviour, IPausable
 
     public void OnStartButtonClick()
     {
+        
         questionScreen.SetActive(true);
         StateController.PauseGame();
         LoadQuestion();
