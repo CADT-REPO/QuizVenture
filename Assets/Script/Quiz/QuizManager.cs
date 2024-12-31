@@ -5,7 +5,8 @@ using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 using UnityEngine.SceneManagement;
-public class QuizManager : MonoBehaviour
+
+public class QuizManager : MonoBehaviour, IPausable
 {
     public static QuizManager quizManager;
     public GameObject questionScreen;
@@ -17,7 +18,7 @@ public class QuizManager : MonoBehaviour
     private List<Question> allQuestions = new List<Question>();
     private Question currentQuestion;
     private float timeRemaining = 10f;
-    private bool isTimerRunning = false;
+    private bool isTimerRunning;
     private bool answerSelected = false; // Track if an answer has been selected
 
     public float gameTime = 120f;
@@ -31,6 +32,34 @@ public class QuizManager : MonoBehaviour
     private int totalQuestionsAnswered = 0;
     private List<string> allAnswers;
 
+    void OnEnable()
+    {
+        StateController.RegisterPausable(this);
+    }
+
+    void OnDisable()
+    {
+        StateController.UnregisterPausable(this);
+    }
+
+    public void ManualUpdate()
+    {
+        // Implement the update logic that should run even when the game is paused
+        if (isGameRunning)
+        {
+            if (isTimerRunning && !answerSelected)
+            {
+                timeRemaining -= Time.unscaledDeltaTime;
+                timerText.text = Mathf.Ceil(timeRemaining).ToString();
+                if (timeRemaining <= 0)
+                {
+                    isTimerRunning = false;
+                    timerText.text = "0";
+                    OnTimeOut();
+                }
+            }
+        }
+    }
 
     void Start()
     {
@@ -65,22 +94,20 @@ public class QuizManager : MonoBehaviour
 
     void Update()
     {
-        if (isGameRunning)
+        if (Time.timeScale != 0)
         {
-            // print("isTimeRunning: " + isTimerRunning);
-            if (isTimerRunning && !answerSelected)
+            if (isGameRunning)
             {
-                timeRemaining -= Time.deltaTime;
-                timerText.text = Mathf.Ceil(timeRemaining).ToString();
-                // timerText.text = "test";
-                // Debug.Log("Time Remaining: " + timeRemaining);
-                if (timeRemaining <= 0)
+                if (isTimerRunning && !answerSelected)
                 {
-                    isTimerRunning = false;
-                    
-                    timerText.text = "0";
-                    OnTimeOut();
-                    // timeRemaining = timeLimit;
+                    timeRemaining -= Time.deltaTime;
+                    timerText.text = Mathf.Ceil(timeRemaining).ToString();
+                    if (timeRemaining <= 0)
+                    {
+                        isTimerRunning = false;
+                        timerText.text = "0";
+                        OnTimeOut();
+                    }
                 }
             }
         }
@@ -89,8 +116,7 @@ public class QuizManager : MonoBehaviour
     public void OnStartButtonClick()
     {
         questionScreen.SetActive(true);
-        isTimerRunning = true;
-        answerSelected = false;
+        StateController.PauseGame();
         LoadQuestion();
         StartNewQuestion();
     }
@@ -118,13 +144,12 @@ public class QuizManager : MonoBehaviour
         }
         timeRemaining = timeLimit; // Ensure timeRemaining is set to timeLimit
         Debug.Log("New Question Started. Time Remaining: " + timeRemaining);
-        // isTimerRunning = true;
-        // answerSelected = false;
+        isTimerRunning = true;
+        answerSelected = false;
         int randomIndex = Random.Range(0, allQuestions.Count);
         currentQuestion = allQuestions[randomIndex];
         allQuestions.RemoveAt(randomIndex);
 
-        
         questionText.text = currentQuestion.question;
         allAnswers = new List<string>();
 
@@ -164,22 +189,18 @@ public class QuizManager : MonoBehaviour
         if (answerSelected) return; // Prevent multiple clicks
 
         answerSelected = true; // Mark answer as selected    
-                               // Debug.Log("Button Clicked: " + answerButtons[buttonIndex].name);
-                               // Debug.Log("Button Index: " + buttonIndex);
-                               // string selectedAnswer = answerButtons[buttonIndex].GetComponentInChildren<TextMeshProUGUI>().text;
         isTimerRunning = false; // Stop the timer
-        // Debug logs to verify selected answer and correct answers
         Debug.Log("Selected Answer: " + selectedAnswer);
         Debug.Log("Correct Answers: " + string.Join(", ", currentQuestion.answers.correct));
 
-        // Check if the selected answer is one of the correct answers
+        
         if (currentQuestion.answers.correct.Exists(answer => answer == selectedAnswer))
         {
             score++;
             correctCount.text = score.ToString();
             gameTime += 10f;
             Debug.Log("Correct Answer! +10s added. New Score: " + score);
-            if (gameTime > 120f) gameTime = 120f;
+            // if (gameTime > 120f) gameTime = 120f;
             totalQuestionsAnswered++;
 
             if (totalQuestionsAnswered == 10 && gameTime > 0)
@@ -197,13 +218,14 @@ public class QuizManager : MonoBehaviour
                 SceneManager.LoadScene("GameOverScreen");
             }
         }
-        // answerSelected = true;
         questionScreen.SetActive(false);
+        StateController.ResumeGame(); // Resume the game after an answer is selected
     }
 
     void OnTimeOut()
     {
         questionScreen.SetActive(false);
+        StateController.ResumeGame(); // Resume the game if time runs out
     }
 
     void shuffleList<T>(List<T> list)

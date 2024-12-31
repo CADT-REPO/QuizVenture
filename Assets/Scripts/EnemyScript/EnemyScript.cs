@@ -45,6 +45,7 @@ public class EnemyScript : MonoBehaviour
     void Start()
     {
         quizManager = GameObject.FindObjectOfType<QuizManager>();
+        print("Quiz Manager: " + quizManager);
         // Debug.Log("Enemy spawned: " + gameObject.name);  // This should print for each instance
         m_playerPosition = Vector3.zero;
         //m_playerNear = true;
@@ -321,11 +322,7 @@ public class EnemyScript : MonoBehaviour
                 {
                     Stop();
                     m_WaitTime -= Time.deltaTime;
-                    if (quizManager != null)
-                    {
-                        quizManager.gameTime -= Time.deltaTime;
-                        Debug.Log("Game time reduced: " + quizManager.gameTime);
-                    }
+                    
 
 
                 }
