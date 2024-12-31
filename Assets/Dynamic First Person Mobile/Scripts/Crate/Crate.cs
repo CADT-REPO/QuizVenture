@@ -7,6 +7,7 @@ public class Crate : MonoBehaviour
     private bool mIsOpen = false;
     private Animator mAnimator;
     public Button openBtn;
+   public Canvas startButtonCanvas;
 
     private void Start()
     {
@@ -15,7 +16,8 @@ public class Crate : MonoBehaviour
         {
             Debug.LogError("Animator not found on the Crate object.");
         }
-        openBtn.gameObject.SetActive(false); // Ensure the button is active at the start
+        startButtonCanvas.gameObject.SetActive(false);
+        // openBtn.gameObject.SetActive(false); // Ensure the button is active at the start
         openBtn.onClick.AddListener(OnButtonClick); // Add listener for button click
     }
 
@@ -28,6 +30,7 @@ public class Crate : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            startButtonCanvas.gameObject.SetActive(false);
             openBtn.gameObject.SetActive(false); // Hide the button when player walks away
         }
     }
@@ -36,6 +39,7 @@ public class Crate : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            startButtonCanvas.gameObject.SetActive(true);
             openBtn.gameObject.SetActive(true); // Show the button when player is near
         }
     }
@@ -53,12 +57,15 @@ public class Crate : MonoBehaviour
 
         if (mIsOpen)
         {
+            startButtonCanvas.gameObject.SetActive(false);
             openBtn.gameObject.SetActive(false); // Hide the button when the crate is open
-            gameObject.SetActive(false); // Hide the crate after it opens
+            gameObject.SetActive(false); 
+            mAnimator.SetBool("open", true);
         }
         else
         {
-            openBtn.gameObject.SetActive(true); // Show the button when the crate is closed
+            startButtonCanvas.gameObject.SetActive(true);
+            openBtn.gameObject.SetActive(true); 
         }
     }
 }
