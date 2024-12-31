@@ -51,9 +51,6 @@ public class Crate : MonoBehaviour
         mIsOpen = !mIsOpen;
         mAnimator.SetBool("open", mIsOpen);
 
-        string interactText = mIsOpen ? "Press E to close" : "Press E to open";
-        // Debug.Log(interactText); // This would update your UI or HUD
-
         if (mIsOpen)
         {
             openBtn.gameObject.SetActive(false); // Hide the button when the crate is open

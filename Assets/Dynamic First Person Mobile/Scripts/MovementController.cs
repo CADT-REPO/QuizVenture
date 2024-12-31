@@ -65,10 +65,6 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
         [SerializeField] private Bobbing m_WalkBob = new Bobbing(); // Bobbing for walking
         [SerializeField] private Bobbing m_IdleBob = new Bobbing(); // Bobbing for idling
 
-        // Shooting Settings
-        [SerializeField] private BulletPool bulletPool; // Reference to the bullet pool
-        [SerializeField] private Transform gunTip; // Reference to the gun tip
-        [SerializeField] private float bulletSpeed = 2f; // Speed of the bullet
         #endregion
 
         // Main reference class
@@ -176,52 +172,7 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
             m_Camera.transform.localPosition += m_HeadMovement;
             m_HeadMovement = Vector3.zero;
         }
-        void HandleShooting()
-        {
-            // if (!) Debug.Log("not click"); // Only shoot when the button is pressed
-
-            // // Get a bullet from the pool
-            // GameObject bullet = bulletPool.GetBullet();
-
-            // // Activate and position the bullet
-            // bullet.transform.position = gunTip.position;
-            // bullet.transform.rotation = gunTip.rotation;
-            // bullet.SetActive(true);
-
-
-            // // Apply velocity to the bullet
-            // Rigidbody rb = bullet.GetComponent<Rigidbody>();
-            // if (rb != null)
-            // {
-            //     rb.velocity = gunTip.forward * bulletSpeed;
-            // }
-            // Input_Shoot = Input.GetButtonDown("Fire1"); // Example for the old Input System
-            // Debug.Log("Input_Shoot: " + Input_Shoot);
-
-            if (Input_Shoot && bulletPool != null && gunTip != null)
-            {
-                GameObject bullet = bulletPool.GetBullet();
-                if (bullet != null)
-                {
-                    bullet.transform.position = gunTip.position;
-                    bullet.transform.rotation = gunTip.rotation;
-                    bullet.SetActive(true);
-
-                    Bullet bulletScript = bullet.GetComponent<Bullet>();
-                    bulletScript.SetBulletPool(bulletPool); // Set the BulletPool reference
-
-                    Rigidbody rb = bullet.GetComponent<Rigidbody>();
-                    if (rb != null)
-                    {
-                        rb.velocity = gunTip.forward * bulletSpeed;
-                    }
-                }
-            }
-            else
-            {
-                // Debug.LogWarning("BulletPool or FirePoint is not assigned!");
-            }
-        }
+       
         private void Shoot()
         {
             RaycastHit hit;
