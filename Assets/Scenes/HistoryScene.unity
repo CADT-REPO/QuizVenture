@@ -300,7 +300,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 752337803}
         m_TargetAssemblyTypeName: SceneController, Assembly-CSharp
-        m_MethodName: GoToScene1
+        m_MethodName: GoToScene4
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

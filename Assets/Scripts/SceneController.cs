@@ -22,7 +22,7 @@ public class SceneController : MonoBehaviour
 
     public void GoToScene4()
     {
-         SceneManager.LoadScene(2);  // load to main game
+         SceneManager.LoadScene(2);  //load to main game
         //SceneManager.LoadScene(1);
     }
 
