@@ -50,7 +50,7 @@ public class QuizManager : MonoBehaviour, IPausable
     void Update()
     {   
         print("Update" + gameTime.timer);
-        if (gameTime.timer <= 0)
+        if (!gameTime.isGameRunning)
         {
             endGame();
         }
@@ -152,7 +152,7 @@ public class QuizManager : MonoBehaviour, IPausable
             Debug.Log("Correct Answer! +10s added. New Score: " + answerManager.GetScore());
             totalQuestionsAnswered++;
 
-            if (totalQuestionsAnswered == 10 && gameTime.timer > 0)
+            if (answerManager.GetScore() == 1 && gameTime.timer > 0)
             {
                 Debug.Log("You Win!");
                 SceneManager.LoadScene("GameWinningScreen");
@@ -194,7 +194,7 @@ public class QuizManager : MonoBehaviour, IPausable
     }
 
 
-    void endGame()
+    public static void endGame()
     {
         Debug.Log("Game Over");
         SceneManager.LoadScene("GameOverScreen");

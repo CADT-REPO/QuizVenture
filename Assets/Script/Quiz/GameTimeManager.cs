@@ -5,7 +5,8 @@ using UnityEngine.UI;
 using TMPro; // Include if using TextMeshPro 
 public class GameTimeManager : MonoBehaviour
 {
-    public float timer = 10f; // Starting timer in seconds
+
+    public float timer = 120f; // Starting timer in seconds
     public bool isGameRunning = false; // Flag to track if the game is running
     public TextMeshProUGUI gameTimerText; // UI text to display the timer
 
@@ -63,5 +64,6 @@ public class GameTimeManager : MonoBehaviour
         isGameRunning = false; // Stop the game
         timer = 0; // Set timer to zero
         CancelInvoke("UpdateGameTimer"); // Stop invoking the timer update
+        QuizManager.endGame(); // Call the end game method from the QuizManager script
     }
 }

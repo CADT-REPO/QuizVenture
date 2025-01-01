@@ -29,4 +29,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/SchoolScene/SchoolScene.unity
     guid: a978d1e8146d6410b9c79db77944b871
+  - enabled: 1
+    path: Assets/Scenes/GameWinnigScreen.unity
+    guid: fb9d7da0d44e5d044bc6e54be8df76d7
   m_configObjects: {}

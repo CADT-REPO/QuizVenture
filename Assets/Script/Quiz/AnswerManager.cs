@@ -2,10 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro; // Include if using TextMeshPro
+
 public class AnswerManager : MonoBehaviour
 {
-    private int score; 
+    private int score;
     public TextMeshProUGUI correctCount;
+
+    // Singleton instance
+    public static AnswerManager instance;
+
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject); // Persist across scenes
+        }
+        else
+        {
+            Destroy(gameObject); // Destroy duplicates
+        }
+    }
 
     // Method to add points to the score
     public void AddScore(int points)
