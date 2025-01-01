@@ -97,7 +97,7 @@ public class QuizManager : MonoBehaviour
 
     public void LoadQuestion()
     {
-        string path = Path.Combine(Application.streamingAssetsPath, "questionSet.JSON");
+        string path = Path.Combine(Application.streamingAssetsPath, "khmer_questionSet.JSON");
         if (File.Exists(path))
         {
             string json = File.ReadAllText(path);
