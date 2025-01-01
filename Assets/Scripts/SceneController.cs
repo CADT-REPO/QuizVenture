@@ -30,6 +30,20 @@ public class SceneController : MonoBehaviour
     {
         SceneManager.LoadScene(2);
     }
+     public void InstrutionScene()
+    {
+        SceneManager.LoadScene(7);
+    }
+
+     public void GoToTeamMemberScene()
+    {
+        SceneManager.LoadScene(5);
+    }
+
+     public void GoToHistoryScene()
+    {
+        SceneManager.LoadScene(6);
+    }
 
     // Loads a scene with the loading bar using the LoadingBarController
     private void LoadSceneWithLoadingBar(int sceneIndex)
