@@ -1040,7 +1040,7 @@ PrefabInstance:
     - target: {fileID: 312631460204088738, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
       propertyPath: quizManager
       value: 
-      objectReference: {fileID: 1585224837}
+      objectReference: {fileID: 0}
     - target: {fileID: 312631460204088738, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
       propertyPath: treasureBox
       value: 
@@ -1126,6 +1126,66 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 665633442}
     - target: {fileID: 2056771474170180886, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: answerButtons.Array.data[3]
+      value: 
+      objectReference: {fileID: 300171971}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: gameTime
+      value: 
+      objectReference: {fileID: 430131836}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: quizTimer
+      value: 
+      objectReference: {fileID: 3555971463184946896}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: timerText
+      value: 
+      objectReference: {fileID: 801459093}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: startButton
+      value: 
+      objectReference: {fileID: 118001963}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: timerObject
+      value: 
+      objectReference: {fileID: 753953510}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: correctCount
+      value: 
+      objectReference: {fileID: 2129697613}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: questionText
+      value: 
+      objectReference: {fileID: 1878688393}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: answerManager
+      value: 
+      objectReference: {fileID: 2027719050}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: gameTimerText
+      value: 
+      objectReference: {fileID: 1300070759}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: questionScreen
+      value: 
+      objectReference: {fileID: 2102184524}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: answerButtons.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: answerButtons.Array.data[0]
+      value: 
+      objectReference: {fileID: 1813835133}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: answerButtons.Array.data[1]
+      value: 
+      objectReference: {fileID: 1538761833}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: answerButtons.Array.data[2]
+      value: 
+      objectReference: {fileID: 665633442}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
       propertyPath: answerButtons.Array.data[3]
       value: 
       objectReference: {fileID: 300171971}
@@ -2653,7 +2713,7 @@ PrefabInstance:
     - target: {fileID: 312631460204088738, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
       propertyPath: quizManager
       value: 
-      objectReference: {fileID: 1585224837}
+      objectReference: {fileID: 0}
     - target: {fileID: 312631460204088738, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
       propertyPath: treasureBox
       value: 
@@ -2739,6 +2799,66 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 665633442}
     - target: {fileID: 2056771474170180886, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: answerButtons.Array.data[3]
+      value: 
+      objectReference: {fileID: 300171971}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: gameTime
+      value: 
+      objectReference: {fileID: 430131836}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: quizTimer
+      value: 
+      objectReference: {fileID: 3555971463184946896}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: timerText
+      value: 
+      objectReference: {fileID: 801459093}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: startButton
+      value: 
+      objectReference: {fileID: 275827006}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: timerObject
+      value: 
+      objectReference: {fileID: 753953510}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: correctCount
+      value: 
+      objectReference: {fileID: 2129697613}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: questionText
+      value: 
+      objectReference: {fileID: 1878688393}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: answerManager
+      value: 
+      objectReference: {fileID: 2027719050}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: gameTimerText
+      value: 
+      objectReference: {fileID: 1300070759}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: questionScreen
+      value: 
+      objectReference: {fileID: 2102184524}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: answerButtons.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: answerButtons.Array.data[0]
+      value: 
+      objectReference: {fileID: 1813835133}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: answerButtons.Array.data[1]
+      value: 
+      objectReference: {fileID: 1538761833}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: answerButtons.Array.data[2]
+      value: 
+      objectReference: {fileID: 665633442}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
       propertyPath: answerButtons.Array.data[3]
       value: 
       objectReference: {fileID: 300171971}
@@ -4130,7 +4250,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1300070758}
-  - {fileID: 836635144}
   m_Father: {fileID: 59265966}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -4229,11 +4348,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 430131831}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 60e65e08bb21a4c4c957210af180d4d0, type: 3}
+  m_Script: {fileID: 11500000, guid: 8e6cedd24d3ee4d788f8091484be0b6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameTimerText: {fileID: 836635145}
-  gameTimeLimit: 120
+  timer: 120
+  isGameRunning: 0
+  gameTimerText: {fileID: 1300070759}
 --- !u!1 &435443089
 GameObject:
   m_ObjectHideFlags: 0
@@ -6734,6 +6854,11 @@ Transform:
   - {fileID: 1687568657}
   m_Father: {fileID: 1400981115}
   m_LocalEulerAnglesHint: {x: 0, y: 270, z: 0}
+--- !u!1 &753953510 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3998757990453007243, guid: 37dc73e502c654796ae58c46b95c7643, type: 3}
+  m_PrefabInstance: {fileID: 3555971463184946890}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &762224534
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7124,140 +7249,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4568767355506878, guid: ff6a1249ab86d5c4588a51507b8b769f, type: 3}
   m_PrefabInstance: {fileID: 823777674}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &836635143
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 836635144}
-  - component: {fileID: 836635146}
-  - component: {fileID: 836635145}
-  m_Layer: 5
-  m_Name: GameTimerText (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &836635144
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 836635143}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 430131832}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 60.3, y: 56.9}
-  m_SizeDelta: {x: 239.2819, y: 50}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &836635145
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 836635143}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_text: 2mn 00s
-  m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_fontSharedMaterials: []
-  m_fontMaterial: {fileID: 0}
-  m_fontMaterials: []
-  m_fontColor32:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
-  m_enableVertexGradient: 0
-  m_colorMode: 3
-  m_fontColorGradient:
-    topLeft: {r: 1, g: 1, b: 1, a: 1}
-    topRight: {r: 1, g: 1, b: 1, a: 1}
-    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
-    bottomRight: {r: 1, g: 1, b: 1, a: 1}
-  m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
-  m_tintAllSprites: 0
-  m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: -1183493901
-  m_overrideHtmlColors: 0
-  m_faceColor:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontSize: 50
-  m_fontSizeBase: 50
-  m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
-  m_fontStyle: 1
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
-  m_textAlignment: 65535
-  m_characterSpacing: 0
-  m_wordSpacing: 0
-  m_lineSpacing: 0
-  m_lineSpacingMax: 0
-  m_paragraphSpacing: 0
-  m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
-  m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
-  m_linkedTextComponent: {fileID: 0}
-  parentLinkedComponent: {fileID: 0}
-  m_enableKerning: 1
-  m_enableExtraPadding: 0
-  checkPaddingRequired: 0
-  m_isRichText: 1
-  m_parseCtrlCharacters: 1
-  m_isOrthographic: 1
-  m_isCullingEnabled: 0
-  m_horizontalMapping: 0
-  m_verticalMapping: 0
-  m_uvLineOffset: 0
-  m_geometrySortingOrder: 0
-  m_IsTextObjectScaleStatic: 0
-  m_VertexBufferAutoSizeReduction: 0
-  m_useMaxVisibleDescender: 1
-  m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -35.012146, w: 0}
-  m_isUsingLegacyAnimationComponent: 0
-  m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
-  m_baseMaterial: {fileID: 0}
-  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!222 &836635146
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 836635143}
-  m_CullTransparentMesh: 1
 --- !u!1001 &858669199
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12802,7 +12793,7 @@ PrefabInstance:
     - target: {fileID: 312631460204088738, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
       propertyPath: quizManager
       value: 
-      objectReference: {fileID: 1585224837}
+      objectReference: {fileID: 0}
     - target: {fileID: 312631460204088738, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
       propertyPath: treasureBox
       value: 
@@ -12888,6 +12879,66 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 665633442}
     - target: {fileID: 2056771474170180886, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: answerButtons.Array.data[3]
+      value: 
+      objectReference: {fileID: 300171971}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: gameTime
+      value: 
+      objectReference: {fileID: 430131836}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: quizTimer
+      value: 
+      objectReference: {fileID: 3555971463184946896}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: timerText
+      value: 
+      objectReference: {fileID: 801459093}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: startButton
+      value: 
+      objectReference: {fileID: 1424449354}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: timerObject
+      value: 
+      objectReference: {fileID: 753953510}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: correctCount
+      value: 
+      objectReference: {fileID: 2129697613}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: questionText
+      value: 
+      objectReference: {fileID: 1878688393}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: answerManager
+      value: 
+      objectReference: {fileID: 2027719050}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: gameTimerText
+      value: 
+      objectReference: {fileID: 1300070759}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: questionScreen
+      value: 
+      objectReference: {fileID: 2102184524}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: answerButtons.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: answerButtons.Array.data[0]
+      value: 
+      objectReference: {fileID: 1813835133}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: answerButtons.Array.data[1]
+      value: 
+      objectReference: {fileID: 1538761833}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: answerButtons.Array.data[2]
+      value: 
+      objectReference: {fileID: 665633442}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
       propertyPath: answerButtons.Array.data[3]
       value: 
       objectReference: {fileID: 300171971}
@@ -14456,17 +14507,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1590409432}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!114 &1585224837 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6630327366363683010, guid: 37dc73e502c654796ae58c46b95c7643, type: 3}
-  m_PrefabInstance: {fileID: 3555971463184946890}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dbd00d36840c0b9299f50d4ee202dc0c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1585569092
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18620,6 +18660,7 @@ GameObject:
   - component: {fileID: 2027719049}
   - component: {fileID: 2027719048}
   - component: {fileID: 2027719047}
+  - component: {fileID: 2027719050}
   m_Layer: 5
   m_Name: Total Answer
   m_TagString: Untagged
@@ -18729,6 +18770,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2027719045}
   m_CullTransparentMesh: 1
+--- !u!114 &2027719050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2027719045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 548b3b9355b744d71ae268ccf8cd7700, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  correctCount: {fileID: 2129697613}
 --- !u!1001 &2033359050
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20633,22 +20687,44 @@ PrefabInstance:
       propertyPath: answerButtons.Array.data[3]
       value: 
       objectReference: {fileID: 300171971}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6630327366363683010, guid: 37dc73e502c654796ae58c46b95c7643, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3998757990453007243, guid: 37dc73e502c654796ae58c46b95c7643, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3555971463184946896}
   m_SourcePrefab: {fileID: 100100000, guid: 37dc73e502c654796ae58c46b95c7643, type: 3}
 --- !u!114 &3555971463184946891 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6664418987229358916, guid: 37dc73e502c654796ae58c46b95c7643, type: 3}
   m_PrefabInstance: {fileID: 3555971463184946890}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 753953510}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ed0a871f04dcd40d4b3e6af12e96d9b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3555971463184946896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 753953510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 149290c17a6964299acda424abb54358, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeLimit: 10
+  timer: 10
+  isTimerRunning: 0
+  timerText: {fileID: 801459093}
+  questionScreen: {fileID: 2102184524}
+  gameTime: {fileID: 430131836}
 --- !u!1001 &4906118899994826903
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -57,6 +57,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 2161045041308941931, guid: 3d071e6f629bea7459298e0f16ec6af4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2328042195224924131, guid: 3d071e6f629bea7459298e0f16ec6af4, type: 3}
       propertyPath: m_LocalScale.x
       value: 10
@@ -232,11 +236,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 152864997609609959, guid: 5e09c941eb019ac43abed1294771a224, type: 3}
       propertyPath: m_Size
-      value: 0.46566516
+      value: 0.4656608
       objectReference: {fileID: 0}
     - target: {fileID: 152864997609609959, guid: 5e09c941eb019ac43abed1294771a224, type: 3}
       propertyPath: m_Value
-      value: -0.00000011263734
+      value: 0.000000056318676
       objectReference: {fileID: 0}
     - target: {fileID: 445983302404815206, guid: 5e09c941eb019ac43abed1294771a224, type: 3}
       propertyPath: m_Maskable
@@ -468,7 +472,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5595916829677865861, guid: 5e09c941eb019ac43abed1294771a224, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 17.409607
+      value: 17.409594
       objectReference: {fileID: 0}
     - target: {fileID: 5850050813911530455, guid: 5e09c941eb019ac43abed1294771a224, type: 3}
       propertyPath: m_Maskable

@@ -5,13 +5,14 @@ using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 using UnityEngine.SceneManagement;
-
+using System.Collections;
 public class QuizManager : MonoBehaviour, IPausable
 {
+    public GameObject timerObject;
     public GameObject questionScreen;
     public TextMeshProUGUI questionText;
     public Button[] answerButtons;
-    public TextMeshProUGUI timerText;
+    // public TextMeshProUGUI timerText;
     public float timeLimit = 10f;
 
     private List<Question> allQuestions = new List<Question>();
@@ -20,97 +21,49 @@ public class QuizManager : MonoBehaviour, IPausable
     private bool isTimerRunning = false;
     private bool answerSelected = false; // Track if an answer has been selected
 
-    public float gameTime = 120f;
-    private bool isGameRunning = false;
-    public TextMeshProUGUI gameTimerText;
+    public GameTimeManager gameTime;
+    public QuizTime quizTimer;
     public Button startButton;
-    // public Canvas startButtonCanvas;
-    public TextMeshProUGUI correctCount;
     private int minutes;
     private int seconds;
-    private int score = 0;
+    public AnswerManager answerManager;
     private int totalQuestionsAnswered = 0;
     private List<string> allAnswers;
-    
 
-    void OnEnable()
-    {
-        StateController.RegisterPausable(this);
-    }
-
-    void OnDisable()
-    {
-        StateController.UnregisterPausable(this);
-    }
 
     public void ManualUpdate()
     {
-        // Implement the update logic that should run even when the game is paused
-        if (isTimerRunning && !answerSelected)
-        {
-            timeRemaining -= Time.unscaledDeltaTime;
-            timerText.text = Mathf.Ceil(timeRemaining).ToString();
-            if (timeRemaining <= 0)
-            {
-                isTimerRunning = false;
-                timerText.text = "0";
-                OnTimeOut();
-            }
-        }
+        print("ManualUpdate");
     }
-  
 
     void Start()
     {
-        isGameRunning = true;
-        gameTime = Mathf.Ceil(gameTime);
-        gameTimerText.text = Mathf.Ceil(gameTime).ToString();
+
+        quizTimer.StartTimer();
         startButton.onClick.AddListener(OnStartButtonClick);
 
-        InvokeRepeating("UpdateGameTimer", 0f, 1f);
         questionScreen.SetActive(false);
     }
 
-    void UpdateGameTimer()
-    {
-        if (isGameRunning)
-        {
-            gameTime -= 1f;
-            minutes = Mathf.FloorToInt(gameTime / 60);
-            seconds = Mathf.FloorToInt(gameTime % 60);
 
-            gameTimerText.text = $"{minutes}mn {seconds:D2}s";
-
-            if (gameTime <= 0)
-            {
-                isGameRunning = false;
-                gameTime = 0;
-                CancelInvoke("UpdateGameTimer");
-                endGame();
-            }
-        }
-    }
 
     void Update()
-    {
-        if (isTimerRunning && !answerSelected)
+    {   
+        print("Update" + gameTime.timer);
+        if (gameTime.timer <= 0)
         {
-            timeRemaining -= Time.unscaledDeltaTime;
-            timerText.text = Mathf.Ceil(timeRemaining).ToString();
-            if (timeRemaining <= 0)
-            {
-                isTimerRunning = false;
-                timerText.text = "0";
-                OnTimeOut();
-            }
+            endGame();
         }
     }
+
 
     public void OnStartButtonClick()
     {
-        
+        timerObject.SetActive(true); // Ensure Timer GameObject is active
+        quizTimer.StartTimer();
         questionScreen.SetActive(true);
         StateController.PauseGame();
+
         LoadQuestion();
         StartNewQuestion();
     }
@@ -141,9 +94,11 @@ public class QuizManager : MonoBehaviour, IPausable
         currentQuestion = allQuestions[randomIndex];
         allQuestions.RemoveAt(randomIndex);
 
-        timeRemaining = timeLimit; // Ensure timeRemaining is set to timeLimit
-        isTimerRunning = true;
         answerSelected = false;
+
+        quizTimer.timer = quizTimer.timeLimit; // Reset the timer here
+        quizTimer.isTimerRunning = true; // Ensure the timer starts fresh
+        quizTimer.StartTimer();
 
         questionText.text = currentQuestion.question;
 
@@ -185,19 +140,19 @@ public class QuizManager : MonoBehaviour, IPausable
         if (answerSelected) return; // Prevent multiple clicks
 
         answerSelected = true; // Mark answer as selected    
-        isTimerRunning = false; // Stop the timer
+        quizTimer.EndQuizTime(); // Stop the timer
+
         Debug.Log("Selected Answer: " + selectedAnswer);
         Debug.Log("Correct Answers: " + string.Join(", ", currentQuestion.answers.correct));
 
         if (currentQuestion.answers.correct.Exists(answer => answer == selectedAnswer))
         {
-            score++;
-            correctCount.text = score.ToString();
-            gameTime += 10f;
-            Debug.Log("Correct Answer! +10s added. New Score: " + score);
+            answerManager.AddScore(1);
+            gameTime.AddTime(10f);
+            Debug.Log("Correct Answer! +10s added. New Score: " + answerManager.GetScore());
             totalQuestionsAnswered++;
 
-            if (totalQuestionsAnswered == 10 && gameTime > 0)
+            if (totalQuestionsAnswered == 10 && gameTime.timer > 0)
             {
                 Debug.Log("You Win!");
                 SceneManager.LoadScene("GameWinningScreen");
@@ -205,9 +160,10 @@ public class QuizManager : MonoBehaviour, IPausable
         }
         else
         {
-            gameTime -= 10f;
+            // gameTime -= 10f;
+            gameTime.DeductTime(10f);
             Debug.Log("Wrong Answer! -10s deducted.");
-            if (gameTime <= 0f)
+            if (gameTime.timer <= 0f)
             {
                 SceneManager.LoadScene("GameOverScreen");
             }
@@ -216,10 +172,12 @@ public class QuizManager : MonoBehaviour, IPausable
         StateController.ResumeGame(); // Resume the game after an answer is selected
     }
 
+
+
     void OnTimeOut()
     {
-        isTimerRunning = false;
-        answerSelected = true;
+        Debug.Log("Timer expired, entering OnTimeOut()");
+        Debug.Log("Timer Value: " + quizTimer.timer);
         questionScreen.SetActive(false);
         StateController.ResumeGame(); // Resume the game if time runs out
     }
@@ -235,21 +193,12 @@ public class QuizManager : MonoBehaviour, IPausable
         }
     }
 
+
     void endGame()
     {
-        isTimerRunning = false;
-        answerSelected = true;
         Debug.Log("Game Over");
         SceneManager.LoadScene("GameOverScreen");
     }
 
-    private void UpdateScore()
-    {
-        correctCount.text = score.ToString();
-        if (score == 10)
-        {
-            Debug.Log("You Win!");
-            SceneManager.LoadScene("GameWinningScreen");
-        }
-    }
+
 }

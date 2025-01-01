@@ -5,6 +5,20 @@
             "correct": ["Phnom PenhPhnom PenhPhnom PenhPhnom PenhPhnom Penh", "Capital of CambodiaPhnom Penh cityPhnom Penh cityPhnom Penh city", "Cambodia's capitalPhnom Penh cityPhnom Penh city", "Phnom Penh cityPhnom Penh cityPhnom Penh city"],
             "wrong": ["Siem Reap", "Battambang", "Sihanoukville", "Kampong Cham", "Kep", "Koh Kong"]
         }
+    },
+    {
+        "question": "What is the capital of Cambodia?",
+        "answers": {
+            "correct": ["Phnom PenhPhnom PenhPhnom PenhPhnom PenhPhnom Penh", "Capital of CambodiaPhnom Penh cityPhnom Penh cityPhnom Penh city", "Cambodia's capitalPhnom Penh cityPhnom Penh city", "Phnom Penh cityPhnom Penh cityPhnom Penh city"],
+            "wrong": ["Siem Reap", "Battambang", "Sihanoukville", "Kampong Cham", "Kep", "Koh Kong"]
+        }
+    },
+    {
+        "question": "What is the capital of Cambodia?",
+        "answers": {
+            "correct": ["Phnom PenhPhnom PenhPhnom PenhPhnom PenhPhnom Penh", "Capital of CambodiaPhnom Penh cityPhnom Penh cityPhnom Penh city", "Cambodia's capitalPhnom Penh cityPhnom Penh city", "Phnom Penh cityPhnom Penh cityPhnom Penh city"],
+            "wrong": ["Siem Reap", "Battambang", "Sihanoukville", "Kampong Cham", "Kep", "Koh Kong"]
+        }
     }
 
     

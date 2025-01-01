@@ -4,16 +4,19 @@ using System.Collections.Generic;
 public class StateController : MonoBehaviour
 {
     private static List<IPausable> pausableObjects = new List<IPausable>();
+    public static bool isPause = false;
 
     static public void PauseGame()
     {
         Time.timeScale = 0;
+        isPause = true;
         Debug.Log("Game Paused");
     }
 
     static public void ResumeGame()
     {
         Time.timeScale = 1;
+        isPause = false;
         Debug.Log("Game Resumed");
     }
 
