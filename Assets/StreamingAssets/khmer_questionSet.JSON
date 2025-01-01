@@ -1,0 +1,23 @@
+[
+    {
+        "question": "cMNuckNþalkm<úCa?",
+        "answers": {
+            "correct": ["PñMeBj", "RkúgPñMeBj", "TIRkúgPñMeBj", "TIRkúgPñMeBj"],
+            "wrong": ["esomrab", ")at;dMbg", "kMBt", "Ekb", "taEkv", "ekaHkug"]
+        }
+    },
+    {
+        "question": "kSRtRKgraCüdMbUgbMputkm<úCabnÞan;BIsnþiPaB?",
+        "answers": {
+            "correct": ["neratþmsIhnu", "neratþmsIhnu", "neratþmsIhnu"],
+            "wrong": ["sIsuvti", "sIhmunI", "GgÁdYg", "sIhmunI", "GgÁdYg", "sIsuvti"]
+        }
+    },
+    {
+        "question": "Pasaénkm<úCaKWCaGVI?",
+        "answers": {
+            "correct": ["Exµr" ,"Exµr", "Exµr"],
+            "wrong": ["éf", "Lav", "evotNam", ")araMg", ")araMg", ")araMg"]
+        }
+    }
+]
