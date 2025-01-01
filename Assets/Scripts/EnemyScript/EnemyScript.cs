@@ -7,7 +7,7 @@ using UnityEngine.AI;
 public class EnemyScript : MonoBehaviour
 {
 
-    private QuizManager quizManager;
+    public GameTimeManager gameTimeManager;
     public NavMeshAgent agent;
     public Animator animator;
     public float startWaitTime = 4;
@@ -44,8 +44,6 @@ public class EnemyScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        quizManager = GameObject.FindObjectOfType<QuizManager>();
-        print("Quiz Manager: " + quizManager);
         // Debug.Log("Enemy spawned: " + gameObject.name);  // This should print for each instance
         m_playerPosition = Vector3.zero;
         //m_playerNear = true;
@@ -107,7 +105,11 @@ public class EnemyScript : MonoBehaviour
     void Update()
     {
         // Debug.Log("Enemy active: " + gameObject.activeSelf);  // Log if the object is still active
-
+        if (gameTimeManager == null)
+        {
+            Debug.LogError("gameTimeManager is null!");
+            return;
+        }
         environemntView();
         if (!m_isPatrol)
         {
@@ -117,6 +119,7 @@ public class EnemyScript : MonoBehaviour
         {
             Patrolling();
         }
+
 
     }
     public void TakeDamage(int damage)
@@ -162,6 +165,7 @@ public class EnemyScript : MonoBehaviour
     {
         m_caughtPlayer |= true;
 
+        // 
     }
 
     void lookingPlayer(Vector3 player)
@@ -176,7 +180,8 @@ public class EnemyScript : MonoBehaviour
                 agent.SetDestination(wayPoints[m_currentWayPointIndex].position);
                 m_WaitTime = startWaitTime;
                 m_TimeToRotate = timeToRotate;
-
+                gameTimeManager.DeductTime(10);
+                print("Player caught, deducting time...");
 
             }
             else
@@ -322,7 +327,7 @@ public class EnemyScript : MonoBehaviour
                 {
                     Stop();
                     m_WaitTime -= Time.deltaTime;
-                    
+
 
 
                 }
