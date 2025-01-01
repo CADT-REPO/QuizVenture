@@ -21278,21 +21278,25 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1244818741}
     - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
+      propertyPath: answerButtons.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
       propertyPath: answerButtons.Array.data[0]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 18040922}
     - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
       propertyPath: answerButtons.Array.data[1]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 274795937}
     - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
       propertyPath: answerButtons.Array.data[2]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 206176242}
     - target: {fileID: 2343265429275446833, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
       propertyPath: answerButtons.Array.data[3]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1352141087}
     - target: {fileID: 2367029993599221461, guid: dc5880aab6794c64fb7f1237cf859c78, type: 3}
       propertyPath: m_Name
       value: TreasureBox
