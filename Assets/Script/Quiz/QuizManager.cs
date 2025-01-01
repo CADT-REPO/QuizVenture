@@ -6,14 +6,19 @@ using System.IO;
 using Newtonsoft.Json;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using UnityEngine.Networking;
+
 public class QuizManager : MonoBehaviour, IPausable
 {
+    private AudioSource audioSource;
+
     public GameObject timerObject;
+    // public AudioSource audioSource;
     public GameObject questionScreen;
     public TextMeshProUGUI questionText;
     public Button[] answerButtons;
-    // public TextMeshProUGUI timerText;
     public float timeLimit = 10f;
+    public int correctToWin = 2;
 
     private List<Question> allQuestions = new List<Question>();
     private Question currentQuestion;
@@ -36,6 +41,18 @@ public class QuizManager : MonoBehaviour, IPausable
 
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            Debug.LogError("AudioSource component is missing from this GameObject!");
+            return;
+        }
+
+        // Optionally, ensure an audio clip is assigned
+        if (audioSource.clip == null)
+        {
+            Debug.LogWarning("No audio clip assigned to the AudioSource.");
+        }
 
         quizTimer.StartTimer();
         startButton.onClick.AddListener(OnStartButtonClick);
@@ -46,8 +63,7 @@ public class QuizManager : MonoBehaviour, IPausable
 
 
     void Update()
-    {   
-        print("Update" + gameTime.timer);
+    {
         if (!gameTime.isGameRunning)
         {
             endGame();
@@ -66,19 +82,59 @@ public class QuizManager : MonoBehaviour, IPausable
         StartNewQuestion();
     }
 
+    // public void LoadQuestion()
+    // {
+    //     string path = Path.Combine(Application.streamingAssetsPath, "khmer_questionSet.JSON");
+    //     if (File.Exists(path))
+    //     {
+    //         string json = File.ReadAllText(path);
+    //         allQuestions = JsonConvert.DeserializeObject<List<Question>>(json);
+    //     }
+    //     else
+    //     {
+    //         Debug.LogError("Questions JSON file not found.");
+    //     }
+    // }
     public void LoadQuestion()
     {
         string path = Path.Combine(Application.streamingAssetsPath, "khmer_questionSet.JSON");
-        if (File.Exists(path))
+
+        if (path.Contains("://") || path.Contains(":///"))
         {
-            string json = File.ReadAllText(path);
+            // For Android or WebGL
+            StartCoroutine(LoadJsonFromStreamingAssets(path));
+        }
+        else
+        {
+            // For desktop and other platforms
+            if (System.IO.File.Exists(path))
+            {
+                string json = System.IO.File.ReadAllText(path);
+                allQuestions = JsonConvert.DeserializeObject<List<Question>>(json);
+            }
+            else
+            {
+                Debug.LogError("Questions JSON file not found.");
+            }
+        }
+    }
+
+    private IEnumerator LoadJsonFromStreamingAssets(string path)
+    {
+        UnityWebRequest www = UnityWebRequest.Get(path);
+        yield return www.SendWebRequest();
+
+        if (www.result == UnityWebRequest.Result.Success)
+        {
+            string json = www.downloadHandler.text;
             allQuestions = JsonConvert.DeserializeObject<List<Question>>(json);
         }
         else
         {
-            Debug.LogError("Questions JSON file not found.");
+            Debug.LogError("Failed to load JSON file from StreamingAssets: " + www.error);
         }
     }
+
 
     public void StartNewQuestion()
     {
@@ -145,12 +201,13 @@ public class QuizManager : MonoBehaviour, IPausable
 
         if (currentQuestion.answers.correct.Exists(answer => answer == selectedAnswer))
         {
+            PlayCorrectAnswerAudio();
             answerManager.AddScore(1);
             gameTime.AddTime(10f);
             Debug.Log("Correct Answer! +10s added. New Score: " + answerManager.GetScore());
             totalQuestionsAnswered++;
 
-            if (answerManager.GetScore() == 1 && gameTime.timer > 0)
+            if (answerManager.GetScore() == correctToWin && gameTime.timer > 0)
             {
                 Debug.Log("You Win!");
                 SceneManager.LoadScene(4);
@@ -196,6 +253,18 @@ public class QuizManager : MonoBehaviour, IPausable
     {
         Debug.Log("Game Over");
         SceneManager.LoadScene("GameOverScreen");
+    }
+    public void PlayCorrectAnswerAudio()
+    {
+        // Play the audio
+        if (audioSource != null && audioSource.clip != null)
+        {
+            audioSource.Play();
+        }
+        else
+        {
+            Debug.LogWarning("Cannot play audio: AudioSource or audio clip is missing.");
+        }
     }
 
 

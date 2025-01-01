@@ -79,6 +79,7 @@ public class EnemyScript : MonoBehaviour
     {
         if (animator != null)
         {
+
             animator.SetTrigger("Hit");
         }
     }
@@ -86,11 +87,14 @@ public class EnemyScript : MonoBehaviour
     public void OnBulletHit()
     {
         hitCount++;
+        gameTimeManager.DeductTime(10f);
+        print("Player caught, deducting time...");
         if (hitCount == 1)
         {
             // idle attack mode
             Debug.Log("Playing Hit Transition Animation");
             animator.SetTrigger("Hit");
+
         }
         else
         {
@@ -180,12 +184,15 @@ public class EnemyScript : MonoBehaviour
                 agent.SetDestination(wayPoints[m_currentWayPointIndex].position);
                 m_WaitTime = startWaitTime;
                 m_TimeToRotate = timeToRotate;
-                gameTimeManager.DeductTime(10);
+                gameTimeManager.DeductTime(10f);
                 print("Player caught, deducting time...");
 
             }
             else
             {
+                gameTimeManager.DeductTime(10f);
+                print("Player caught, deducting time...");
+
                 Stop();
             }
         }
