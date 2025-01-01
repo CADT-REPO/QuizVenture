@@ -23,7 +23,8 @@ public class Crate : MonoBehaviour
             Debug.LogError("Animator not found on the Crate object.");
         }
 
-        btnCanvas.gameObject.SetActive(false); // Hide the button when the game starts
+        // btnCanvas.gameObject.SetActive(false); // Hide the button when the game starts
+        openBtn.gameObject.SetActive(false); // Hide the button when the game starts
         openBtn.onClick.AddListener(OnButtonClick); // Add listener for button click
     }
 
@@ -41,11 +42,13 @@ public class Crate : MonoBehaviour
         // Show or hide the button canvas based on distance
         if (distance <= activationDistance)
         {
-            btnCanvas.gameObject.SetActive(true); // Show the button
+            openBtn.gameObject.SetActive(true); // Show the button
+            // btnCanvas.gameObject.SetActive(true); // Show the button
         }
         else
         {
-            btnCanvas.gameObject.SetActive(false); // Hide the button
+            openBtn.gameObject.SetActive(false); // Hide the button
+            // btnCanvas.gameObject.SetActive(false); // Hide the button
         }
 
     }
@@ -69,7 +72,7 @@ public class Crate : MonoBehaviour
             // quizManager.OnStartButtonClick();
             // boxTimer.StartTimer(10f); 
             openBtn.gameObject.SetActive(false); // Hide the button when the crate is open
-            btnCanvas.gameObject.SetActive(false); // Hide the button when the crate is open
+            // btnCanvas.gameObject.SetActive(false); // Hide the button when the crate is open
             this.gameObject.SetActive(false); // Hide the crate itself
         }
     }
