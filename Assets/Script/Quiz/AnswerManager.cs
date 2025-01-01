@@ -28,7 +28,7 @@ public class AnswerManager : MonoBehaviour
     public void AddScore(int points)
     {
         score += points;
-        correctCount.text = score.ToString(); // Update the UI text
+        correctCount.text = $"{score.ToString()} / 10"; // Update the UI text
         Debug.Log("Score: " + score); // Optionally log the updated score
     }
 
@@ -36,7 +36,7 @@ public class AnswerManager : MonoBehaviour
     public void ResetScore()
     {
         score = 0;
-        correctCount.text = "0"; // Update the UI text
+        correctCount.text = "0/10"; // Update the UI text
         Debug.Log("Score reset to 0");
     }
 

@@ -92,7 +92,7 @@ public class TreasureSpawner : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("No available objects in the pool to spawn.");
+                // Debug.LogWarning("No available objects in the pool to spawn.");
             }
         }
     }

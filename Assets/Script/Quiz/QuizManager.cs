@@ -17,8 +17,6 @@ public class QuizManager : MonoBehaviour, IPausable
 
     private List<Question> allQuestions = new List<Question>();
     private Question currentQuestion;
-    private float timeRemaining = 10f;
-    private bool isTimerRunning = false;
     private bool answerSelected = false; // Track if an answer has been selected
 
     public GameTimeManager gameTime;
@@ -155,7 +153,7 @@ public class QuizManager : MonoBehaviour, IPausable
             if (answerManager.GetScore() == 1 && gameTime.timer > 0)
             {
                 Debug.Log("You Win!");
-                SceneManager.LoadScene("GameWinningScreen");
+                SceneManager.LoadScene(4);
             }
         }
         else
