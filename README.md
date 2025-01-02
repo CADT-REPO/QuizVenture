@@ -45,7 +45,7 @@ To set up and use scenes in Unity for QuizVenture, follow these steps:
 3. You will find the following scenes:
     - `SplashScreen` : The splash screen of the game name.
     - `HomeScreen` : The home screen of the game.
-    - `MainScene`: The main gameplay scene where the quiz takes place.
+    - `MainScene2`: The main gameplay scene where the quiz takes place.
     - `GameOverScreen`: The main gameplay scene show when the game is over or the time is run out.
     - `GameWinningScreen`: The scene when player wins the game.
     - `Leaderboard/History`: Show history of player record in game (Static currently)
