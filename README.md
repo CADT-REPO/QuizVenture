@@ -18,7 +18,8 @@ QuizVenture is an interactive quiz game that challenges players with a variety o
     ```sh
     cd QuizVenture
     ```
-3. Run the project Scene
+3. Check out the branch `developed`, the default branch, to see the latest code.
+4. Run the project Scene
 - Open Unity Hub
 - Click `Add` button
 - Choose `Add project from Disk`
@@ -37,6 +38,10 @@ To set up and use scenes in Unity for QuizVenture, follow these steps:
     - `HomeScreen` : The home screen of the game.
     - `MainScene`: The main gameplay scene where the quiz takes place.
     - `GameOverScreen`: The main gameplay scene show when the game is over or the time is run out.
+    - `GameWinningScreen`: The scene when player wins the game.
+    - `Leaderboard/History`: Show history of player record in game (Static currently)
+    - `TeamScene`: Show the developer team members.
+    - `InstructionScene`: Show how the player can play the game and win !!!
 
 ## Contributing
 
