@@ -3,65 +3,68 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+// Defines a new class called LoadingBarController, which inherits from MonoBehaviour
+// so it can be attached to GameObjects in a Unity scene.
 public class LoadingBarController : MonoBehaviour
 {
-    // Public references to the Loader UI and the Slider
-    public GameObject LoaderUI; // The GameObject containing the loading screen UI
-    public Slider LoadingBar;  // The Slider component for the loading bar
+    // Public GameObject variable to hold the UI element that displays the loading screen.
+    public GameObject LoaderUI;
 
-    // Speed factor to slow down the loading bar
-    public float speedFactor = 0.2f; // Lower value = slower loading bar
+    // Public Slider variable to control the visual loading bar UI component.
+    public Slider LoadingBar;
 
-    // Method to start loading a scene by index
+    // Public method that initiates loading a scene with a specified index.
     public void LoadScene(int index)
     {
-        if (LoaderUI != null && LoadingBar != null)
-        {
-            Debug.Log("Starting scene load...");
-            LoaderUI.SetActive(true); // Display the loading screen
-            StartCoroutine(LoadScene_Coroutine(2)); // Start loading the scene
-        }
-        else
-        {
-            Debug.LogError("LoaderUI or LoadingBar is not assigned in the inspector!");
-        }
+        // Starts the coroutine that will load the scene asynchronously.
+        StartCoroutine(LoadScene_Coroutine(index));
     }
 
-    // Coroutine to handle asynchronous scene loading
-    private IEnumerator LoadScene_Coroutine(int index)
+    // Coroutine that manages the asynchronous scene loading process.
+    public IEnumerator LoadScene_Coroutine(int index)
     {
-        // Reset the loading bar
+        // Sets the loading bar's value to 0 (empty) at the beginning.
         LoadingBar.value = 0;
+        
+        // Makes the loader UI visible to the player.
+        LoaderUI.SetActive(true);
 
-        // Start loading the scene asynchronously
+        // Begins loading the scene asynchronously. 
+        // This allows the scene to load in the background without freezing the game.
         AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(index);
-        asyncOperation.allowSceneActivation = false; // Prevent automatic scene activation
 
+        // Prevents the scene from automatically switching to the loaded scene
+        // when it reaches 90% completion, so we can control when it activates.
+        asyncOperation.allowSceneActivation = false;
+
+        // Initializes a float variable `progress` to track loading progress.
         float progress = 0;
+        float loadSpeedFactor = 0.5f;
 
-        // Loop until the scene is fully loaded
+        // Creates a speed factor to control how fast the loading bar progresses visually.
+        // float loadSpeedFactor = 0.1f;
+
+        // Starts a loop that continues until the loading operation is complete.
         while (!asyncOperation.isDone)
         {
-            // Gradually update the progress bar using the speed factor
-            progress = Mathf.MoveTowards(progress, asyncOperation.progress, speedFactor * Time.deltaTime);
+            // Gradually increases `progress` towards `asyncOperation.progress` over time
+            // to slow down the visual filling of the loading bar.
+             progress = Mathf.MoveTowards(progress, asyncOperation.progress, loadSpeedFactor * Time.deltaTime);
+             // Debug the progress to see what's happening
+              Debug.Log($"Loading progress: {progress}");
+            // Sets the loading bar's value to the current `progress` value.
             LoadingBar.value = progress;
 
-            Debug.Log($"Loading progress: {progress}");
-
-            // If loading is almost complete, fill the bar and activate the scene
+            // Checks if `progress` has reached or exceeded 0.9, the threshold for scene activation.
             if (progress >= 0.9f)
             {
-                // Pause briefly to simulate smooth transition
-                yield return new WaitForSeconds(1f);
-
-                // Fill the progress bar to 1 and activate the scene
+                // When progress reaches 1, the loading bar is full, and we allow the scene to activate.
                 LoadingBar.value = 1;
                 asyncOperation.allowSceneActivation = true;
             }
-
-            yield return null; // Wait for the next frame
+            
+            // Waits until the next frame before continuing the loop.
+            yield return null;
         }
-
-        Debug.Log("Scene load complete!");
     }
 }

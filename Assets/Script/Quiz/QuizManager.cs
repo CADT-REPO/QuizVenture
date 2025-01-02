@@ -1,280 +1,271 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro; // Include if using TextMeshPro
-
-// update logic for randomize the question set
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
+using UnityEngine.SceneManagement;
+using System.Collections;
+using UnityEngine.Networking;
 
-public class QuizManager : MonoBehaviour
+public class QuizManager : MonoBehaviour, IPausable
 {
-    public GameObject mainScreen;
+    private AudioSource audioSource;
+
+    public GameObject timerObject;
+    // public AudioSource audioSource;
     public GameObject questionScreen;
-    public TextMeshProUGUI questionText; // Text component to display the question
-    public Button[] answerButtons; // Array of answer buttons
-    public TextMeshProUGUI timerText; // Text component for the timer
-    public float timeLimit = 10f; // Time limit per question in seconds
+    public TextMeshProUGUI questionText;
+    public Button[] answerButtons;
+    public float timeLimit = 10f;
+    public int correctToWin = 2;
 
     private List<Question> allQuestions = new List<Question>();
     private Question currentQuestion;
-    private float timeRemaining;
-    private bool isTimerRunning = true;
-    private bool correctAnswerSelected = false;
+    private bool answerSelected = false; // Track if an answer has been selected
 
-    // global main screen
-    private float gameTime = 120f;
-     private float gameTimeRemaining;
-    private bool isGameRunning = false; // Track game state
-    public TextMeshProUGUI gameTimerText; // Game timer text (total game time)
-    public Button startButton; // Button to start the game
-
-    // for game timer
+    public GameTimeManager gameTime;
+    public QuizTime quizTimer;
+    public Button startButton;
     private int minutes;
     private int seconds;
+    public AnswerManager answerManager;
+    private int totalQuestionsAnswered = 0;
+    private List<string> allAnswers;
 
-    // to random position of treasure button
-    public Button targetButton; 
-    public RectTransform canvasRect;
+
+    public void ManualUpdate()
+    {
+        print("ManualUpdate");
+    }
 
     void Start()
     {
-        // LoadQuestion();
-        // StartNewQuestion();
-        isGameRunning = true;
-        gameTime = Mathf.Ceil(gameTime);
-        gameTimerText.text = Mathf.Ceil(gameTime).ToString();
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            Debug.LogError("AudioSource component is missing from this GameObject!");
+            return;
+        }
+
+        // Optionally, ensure an audio clip is assigned
+        if (audioSource.clip == null)
+        {
+            Debug.LogWarning("No audio clip assigned to the AudioSource.");
+        }
+
+        quizTimer.StartTimer();
         startButton.onClick.AddListener(OnStartButtonClick);
 
-        // start the game timer as sson as unity plays
-        InvokeRepeating("UpdateGameTimer", 0f, 1f);
-        mainScreen.SetActive(true);
         questionScreen.SetActive(false);
-
-        if (targetButton != null && canvasRect != null)
-        {
-            RandomizeTreasure();
-        }
-        else
-        {
-            Debug.LogError("Button or Canvas not assigned in the Inspector.");
-        }
-
     }
 
- void UpdateGameTimer()
-{
-    if (isGameRunning)
-    {
-        gameTime -= 1f;
-
-        Debug.Log($"Game Time: {gameTime}");
-
-        minutes = Mathf.FloorToInt(gameTime / 60);
-        seconds = Mathf.FloorToInt(gameTime % 60);
-        // Debug.Log($"Minutes: {minutes}, Seconds: {seconds}");
-
-        // Update the game timer text
-        gameTimerText.text = $"{minutes}mn {seconds:D2}s";
-
-        if (gameTime <= 0)
-        {
-            isGameRunning = false;
-            gameTime = 0;
-            CancelInvoke("UpdateGameTimer");
-            endGame();
-        }
-    }
-}
 
 
     void Update()
     {
-
-        // if (isGameRunning)
-        // {
-        //     // Update the overall game timer
-            
-        //     gameTime -= Time.deltaTime;
-        //     // gameTimeRemaining = gameTime;
-        //     gameTimerText.text = Mathf.Ceil(gameTime).ToString();
-
-        //     if (gameTime <= 0)
-        //     {
-        //         // If game time is up, end the game
-        //         isGameRunning = false;
-        //         gameTime = 0;
-        //         endGame();
-        //     }
-        // }
-
-        if (isTimerRunning && !correctAnswerSelected)
+        if (!gameTime.isGameRunning)
         {
-            timeRemaining -= Time.deltaTime;
-            timerText.text = Mathf.Ceil(timeRemaining).ToString();
-
-            if (timeRemaining <= 0)
-            {
-                isTimerRunning = false;
-                timerText.text = "0";
-                OnTimeOut();
-            }
+            endGame();
         }
     }
 
+
     public void OnStartButtonClick()
     {
-        // // Start the game
-        // isGameRunning = true;
-        mainScreen.SetActive(false);
+        timerObject.SetActive(true); // Ensure Timer GameObject is active
+        quizTimer.StartTimer();
         questionScreen.SetActive(true);
+        StateController.PauseGame();
+
         LoadQuestion();
         StartNewQuestion();
     }
 
+    // public void LoadQuestion()
+    // {
+    //     string path = Path.Combine(Application.streamingAssetsPath, "khmer_questionSet.JSON");
+    //     if (File.Exists(path))
+    //     {
+    //         string json = File.ReadAllText(path);
+    //         allQuestions = JsonConvert.DeserializeObject<List<Question>>(json);
+    //     }
+    //     else
+    //     {
+    //         Debug.LogError("Questions JSON file not found.");
+    //     }
+    // }
     public void LoadQuestion()
     {
-        string path = Path.Combine(Application.streamingAssetsPath, "questionSet.JSON");
-        if (File.Exists(path))
+        string path = Path.Combine(Application.streamingAssetsPath, "khmer_questionSet.JSON");
+
+        if (path.Contains("://") || path.Contains(":///"))
         {
-            string json = File.ReadAllText(path);
+            // For Android or WebGL
+            StartCoroutine(LoadJsonFromStreamingAssets(path));
+        }
+        else
+        {
+            // For desktop and other platforms
+            if (System.IO.File.Exists(path))
+            {
+                string json = System.IO.File.ReadAllText(path);
+                allQuestions = JsonConvert.DeserializeObject<List<Question>>(json);
+            }
+            else
+            {
+                Debug.LogError("Questions JSON file not found.");
+            }
+        }
+    }
+
+    private IEnumerator LoadJsonFromStreamingAssets(string path)
+    {
+        UnityWebRequest www = UnityWebRequest.Get(path);
+        yield return www.SendWebRequest();
+
+        if (www.result == UnityWebRequest.Result.Success)
+        {
+            string json = www.downloadHandler.text;
             allQuestions = JsonConvert.DeserializeObject<List<Question>>(json);
         }
         else
         {
-            Debug.LogError("Questions JSON file not found.");
+            Debug.LogError("Failed to load JSON file from StreamingAssets: " + www.error);
         }
     }
 
+
     public void StartNewQuestion()
     {
-        if(allQuestions.Count == 0){
+        if (allQuestions.Count == 0)
+        {
             Debug.LogError("No question available to display");
             return;
         }
 
-        //  Randomly select a question
         int randomIndex = Random.Range(0, allQuestions.Count);
         currentQuestion = allQuestions[randomIndex];
-        allQuestions.RemoveAt(randomIndex); //Optionally remove questions to avoid repeats
+        allQuestions.RemoveAt(randomIndex);
 
-        // reset timer and start it
+        answerSelected = false;
 
-        timeRemaining = timeLimit;
-        isTimerRunning = true;
-        correctAnswerSelected = false;
+        quizTimer.timer = quizTimer.timeLimit; // Reset the timer here
+        quizTimer.isTimerRunning = true; // Ensure the timer starts fresh
+        quizTimer.StartTimer();
 
-        // update the question text
         questionText.text = currentQuestion.question;
 
-        // randomize and assign answer button
-        List<string> allAnswers = new List<string>();
-        // allAnswers.AddRange(currentQuestion.answers.wrong);
+        allAnswers = new List<string>();
 
-        // randomly choose 1 correct answer
-        if(currentQuestion.answers.correct.Count > 0) {
+        if (currentQuestion.answers.correct.Count > 0)
+        {
             int correctIndex = Random.Range(0, currentQuestion.answers.correct.Count);
             allAnswers.Add(currentQuestion.answers.correct[correctIndex]);
         }
 
-        // randomly choose 3 wrong answer
-        if (currentQuestion.answers.wrong.Count > 0) {
+        if (currentQuestion.answers.wrong.Count > 0)
+        {
             List<string> wrongAnswers = new List<string>(currentQuestion.answers.wrong);
-            for(int i =0; i < 3 && wrongAnswers.Count >0; i++){
+            for (int i = 0; i < 3 && wrongAnswers.Count > 0; i++)
+            {
                 int wrongIndex = Random.Range(0, wrongAnswers.Count);
                 allAnswers.Add(wrongAnswers[wrongIndex]);
                 wrongAnswers.RemoveAt(wrongIndex);
             }
-        }  
+        }
         shuffleList(allAnswers);
 
-        for (int i=0; i < answerButtons.Length; i++){
-            if(i < allAnswers.Count){
-                // int index = i;
-                answerButtons[i].gameObject.SetActive(true);
-                answerButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = allAnswers[i];
+        for (int i = 0; i < answerButtons.Length; i++)
+        {
+            answerButtons[i].gameObject.SetActive(true);
+            answerButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = allAnswers[i];
 
-                string answer = allAnswers[i];
-                answerButtons[i].onClick.RemoveAllListeners();
-                answerButtons[i].onClick.AddListener(() => OnAnswerSelected(i, answer));
-            }
-            else {
-                answerButtons[i].gameObject.SetActive(false);
+            string answer = allAnswers[i];
+            Debug.Log("Answer: " + answer);
+            answerButtons[i].onClick.RemoveAllListeners();
+            answerButtons[i].onClick.AddListener(() => OnAnswerSelected(answer));
+        }
+        Debug.Log("Question loaded: " + allAnswers);
+    }
+
+    public void OnAnswerSelected(string selectedAnswer)
+    {
+        if (answerSelected) return; // Prevent multiple clicks
+
+        answerSelected = true; // Mark answer as selected    
+        quizTimer.EndQuizTime(); // Stop the timer
+
+        Debug.Log("Selected Answer: " + selectedAnswer);
+        Debug.Log("Correct Answers: " + string.Join(", ", currentQuestion.answers.correct));
+
+        if (currentQuestion.answers.correct.Exists(answer => answer == selectedAnswer))
+        {
+            PlayCorrectAnswerAudio();
+            answerManager.AddScore(1);
+            gameTime.AddTime(10f);
+            Debug.Log("Correct Answer! +10s added. New Score: " + answerManager.GetScore());
+            totalQuestionsAnswered++;
+
+            if (answerManager.GetScore() == correctToWin && gameTime.timer > 0)
+            {
+                Debug.Log("You Win!");
+                SceneManager.LoadScene(4);
             }
         }
+        else
+        {
+            // gameTime -= 10f;
+            gameTime.DeductTime(10f);
+            Debug.Log("Wrong Answer! -10s deducted.");
+            if (gameTime.timer <= 0f)
+            {
+                SceneManager.LoadScene("GameOverScreen");
+            }
+        }
+        questionScreen.SetActive(false);
+        StateController.ResumeGame(); // Resume the game after an answer is selected
     }
 
-    public void OnAnswerButtonClicked(int buttonIndex, string selectedAnswer)
-    {
-        OnAnswerSelected(buttonIndex, selectedAnswer);
-    }
-    
-    public void OnAnswerSelected(int buttonIndex, string selectedAnswer)
-    {
-        Debug.Log("Button clicked: " + buttonIndex + " - " + selectedAnswer);
 
-       if(currentQuestion.answers.correct.Contains(selectedAnswer)){
-            Debug.Log("correct answer!!");
-            correctAnswerSelected = true; 
-            isTimerRunning = false;
-
-
-                // isGameRunning = false;
-                gameTime += 10f;
-                if(gameTime > 120f){
-                    gameTime = 120f;
-                }
-
-                minutes = Mathf.FloorToInt(gameTime / 60);
-                seconds = Mathf.FloorToInt(gameTime % 60);
-                
-                gameTimerText.text = $"{minutes}mn {seconds:D2}s";
-
-                questionScreen.SetActive(false);
-                mainScreen.SetActive(true);
-                RandomizeTreasure();
-                // isGameRunning = true;
-
-       }
-       else {
-            Debug.Log("wrong answer. try again");
-       }
-    }
 
     void OnTimeOut()
     {
-        Debug.Log("Time's up!");
-        mainScreen.SetActive(true);
+        Debug.Log("Timer expired, entering OnTimeOut()");
+        Debug.Log("Timer Value: " + quizTimer.timer);
         questionScreen.SetActive(false);
-        // Handle time-out logic, e.g., proceed to the next question
+        StateController.ResumeGame(); // Resume the game if time runs out
     }
 
-    void shuffleList<T>(List<T> list){
-        for (int i = list.Count -1; i > 0; i--){
-            int j = Random.Range(0, i+1);
+    void shuffleList<T>(List<T> list)
+    {
+        for (int i = list.Count - 1; i > 0; i--)
+        {
+            int j = Random.Range(0, i + 1);
             T temp = list[i];
             list[i] = list[j];
             list[j] = temp;
         }
     }
 
-    void endGame()
-    {   
-        Debug.Log("game over");
-        mainScreen.SetActive(true);
+
+    public static void endGame()
+    {
+        Debug.Log("Game Over");
+        SceneManager.LoadScene("GameOverScreen");
     }
-    void RandomizeTreasure() {
-        RectTransform buttonRect = targetButton.GetComponent<RectTransform>();
-
-        // get the size of the canvas
-        float canvasWidth = canvasRect.rect.width; 
-        float canvasHeight = canvasRect.rect.height; 
-
-        // calculate random x and y posisition within the canvas bound
-        float randomX = Random.Range(-canvasWidth / 2 + buttonRect.rect.width / 2, canvasWidth / 2 - buttonRect.rect.width / 2);
-        float randomY = Random.Range(-canvasHeight / 2 + buttonRect.rect.height / 2, canvasHeight / 2 - buttonRect.rect.height / 2);
-
-        // Set the button position
-        buttonRect.anchoredPosition = new Vector2(randomX, randomY);
+    public void PlayCorrectAnswerAudio()
+    {
+        // Play the audio
+        if (audioSource != null && audioSource.clip != null)
+        {
+            audioSource.Play();
+        }
+        else
+        {
+            Debug.LogWarning("Cannot play audio: AudioSource or audio clip is missing.");
+        }
     }
+
+
 }

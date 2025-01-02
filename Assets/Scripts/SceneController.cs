@@ -1,45 +1,45 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class SceneController : MonoBehaviour
 {
-    public LoadingBarController loadingBarController; // Reference to the LoadingBarController
-    public GameObject loadingBarObject;              // Reference to the Loader UI object
+    public LoadingBarController loadingBarController;
+    public GameObject loadingBarObject; // Reference to the Loading Bar GameObject
 
-    // Method to load Scene 1 directly
+    // Manage the Scene
     public void GoToScene1()
     {
-        SceneManager.LoadScene(0); // Load the scene with index 0
+        SceneManager.LoadScene(1);
     }
 
-    // Method to load Scene 2 with the loading bar
     public void GoToScene2()
     {
-        LoadSceneWithLoadingBar(2); // Pass the index of the scene to load
+        LoadSceneWithLoadingBar(2);
+        //SceneManager.LoadScene(1);
     }
 
-    // Method to load Scene 3 directly
+
+    public void GoToScene4()
+    {
+         SceneManager.LoadScene(2);  // load to main game
+        //SceneManager.LoadScene(1);
+    }
+
     public void GoToScene3()
     {
-        SceneManager.LoadScene(3); // Load the scene with index 3
+        SceneManager.LoadScene(2);
     }
 
-    // Private method to load a scene using the loading bar
+    // Loads a scene with the loading bar using the LoadingBarController
     private void LoadSceneWithLoadingBar(int sceneIndex)
     {
         if (loadingBarObject != null)
         {
-            loadingBarObject.SetActive(true); // Activate the loading UI
+            loadingBarObject.SetActive(true); // Activate loading bar UI
         }
 
-        if (loadingBarController != null)
-        {
-            loadingBarController.gameObject.SetActive(true); // Ensure the LoadingBarController is active
-            loadingBarController.LoadScene(sceneIndex); // Start loading with the loading bar
-        }
-        else
-        {
-            Debug.LogError("LoadingBarController is not assigned in the inspector!");
-        }
+        loadingBarController.gameObject.SetActive(true); // Ensure LoadingBarController is active
+        loadingBarController.LoadScene(sceneIndex); // Start loading with progress bar
     }
 }
