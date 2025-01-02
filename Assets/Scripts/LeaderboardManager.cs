@@ -27,19 +27,18 @@ public class HistoryBoardManager : MonoBehaviour
     void Start()
     {
         // Update the UI elements with data
-        UpdateLeaderboardRow(playerRange, playerName, correctAnswers, totalTime, totalQuest);
+        // UpdateLeaderboardRow(playerRange, playerName, correctAnswers, totalTime, totalQuest);
     }
 
     public void UpdateLeaderboardRow(string range, string username, string correctAns, string timerValue, string totalQ)
     {
         if (leaderboardRow != null)
         {
-            // Assign values to the respective text fields
-            leaderboardRow.range.text = range;
-            leaderboardRow.username.text = username;
-            leaderboardRow.correctAnswers.text = correctAns;
-            leaderboardRow.totalTime.text = timerValue;
-            leaderboardRow.totalQuest.text = totalQ;
+            leaderboardRow.range.text = range ?? "N/A";   // Use null-coalescing operator to handle null values gracefully
+            leaderboardRow.username.text = username ?? "N/A";
+            leaderboardRow.correctAnswers.text = correctAns ?? "N/A";
+            leaderboardRow.totalTime.text = timerValue ?? "N/A";
+            leaderboardRow.totalQuest.text = totalQ ?? "N/A";
         }
         else
         {

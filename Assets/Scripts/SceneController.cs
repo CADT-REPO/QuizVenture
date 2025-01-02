@@ -22,13 +22,27 @@ public class SceneController : MonoBehaviour
 
     public void GoToScene4()
     {
-         SceneManager.LoadScene(2);  // load to main game
+         SceneManager.LoadScene(2);  //load to main game
         //SceneManager.LoadScene(1);
     }
 
     public void GoToScene3()
     {
         SceneManager.LoadScene(2);
+    }
+     public void InstrutionScene()
+    {
+        SceneManager.LoadScene(7);
+    }
+
+     public void GoToTeamMemberScene()
+    {
+        SceneManager.LoadScene(5);
+    }
+
+     public void GoToHistoryScene()
+    {
+        SceneManager.LoadScene(6);
     }
 
     // Loads a scene with the loading bar using the LoadingBarController

@@ -35,4 +35,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/GameWinnigScreen.unity
     guid: fb9d7da0d44e5d044bc6e54be8df76d7
+  - enabled: 1
+    path: Assets/Scenes/MemberScene.unity
+    guid: d996a940635a56742b0ea69157c19e62
+  - enabled: 1
+    path: Assets/Scenes/HistoryScene.unity
+    guid: 07ca5076b68ba4e4c9fe48d58f625c60
+  - enabled: 1
+    path: Assets/Scenes/InstructionScene.unity
+    guid: 2187a804a8abe2b4f8f740add74ba3d6
   m_configObjects: {}
