@@ -7,6 +7,15 @@ QuizVenture is an interactive quiz game that challenges players with a variety o
 - Single-player and multiplayer modes
 - Timed quizzes
 - Leaderboards
+- Combat with the Enemy
+- Timer System
+- Treasure Box System
+- Enemy (AI and NPCs)
+- Health System for enemy
+- Scoring System
+- Physic-Based Interaction
+- Sound System
+- Animation
 
 ## Installation
 
